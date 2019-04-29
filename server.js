@@ -7,6 +7,10 @@ const hbs = require('hbs');
 const utils = require('./utils');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
+const passport = require('passport');
+const flash = require('connect-flash');
+
+
 
 mongoose.connect('mongodb://localhost/registration', { useNewUrlParser: true });
 var db = mongoose.connection;
@@ -46,19 +50,18 @@ app.get('/', (request, response) => {
     });
 });
 
-/*function requiresLogin(req, res, next) {
-    //console.log("before " + req.session.userId);
-    if (existing_user.authenticate) {
-        return next();
-    }else {
-        res.send('You must be logged in to view this page.');
+function isAuthenticated(request, response, next) {
+    if (request.session.passport !== undefined) {
+        console.log(request.session.passport);
+        next();
+    } else {
+        response.redirect('/');
     }
-}*/
-/*var db1 = utils.getDb();
-console.log(db1.collection('registration').find().toArray(function(err, user) {
-}));*/
+}
 
-app.get('/mathgame', (request, response) => {
+var ID;
+
+app.get('/mathgame', isAuthenticated, (request, response) => {
     response.render('game.hbs', {
         title: 'Math Game',
         head: 'Welcome To The Game Center',
@@ -109,6 +112,8 @@ app.post('/register', function(req, res) {
                     if (err){
                         res.redirect('/register');
                     }else {
+                        //req.session.userId = user._id
+                        ID = user._id;
                         res.redirect('/created');
                     }
                 });
@@ -116,8 +121,7 @@ app.post('/register', function(req, res) {
                 res.end("Username already exists")
             }
         })
-    };
-
+    }
 });
 
 app.post('/verify', function(req, res) {
@@ -137,7 +141,7 @@ app.post('/verify', function(req, res) {
         var db = utils.getDb();
         db.collection('registration').findOne({username: req.body.username}, function(err, user) {
             if (user === null){
-                res.end("Invalid User")
+                res.end('Invalid User');
             }else if(user.username === req.body.username && user.password === req.body.password) {
                 res.redirect('/mathgame');
             }else {
@@ -146,7 +150,41 @@ app.post('/verify', function(req, res) {
             //authenticate = req.session.userId = user._id
         });
     }
-})
+});
+
+
+
+app.get('/profile', function (req, res, next) {
+    var db = utils.getDb();
+    db.collection('registration').findById({_id: ID}, function (error, user) {
+            if (error) {
+                return next(error);
+            } else {
+                if (user === null) {
+                    var err = new Error('Not authorized! Go back!');
+                    err.status = 400;
+                    return next(err);
+                } else {
+                    //return res.send('<h1>Name: </h1>' + user.fname + '<h2>Username: </h2>' + user.username + '<br><a type="button" href="/logout">Logout</a>')
+                }
+            }
+        });
+});
+
+app.get('/logout', function (req, res, next) {
+    if (req.session) {
+        // delete session object
+        req.session.destroy(function (err) {
+            if (err) {
+                return next(err);
+            } else {
+                return res.redirect('/');
+            }
+        });
+    }
+});
+
+
 
 app.get('/register', (request, response) => {
     response.render('add.hbs', {
