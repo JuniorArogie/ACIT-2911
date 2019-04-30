@@ -12,8 +12,8 @@ const flash = require('connect-flash');
 
 
 
-mongoose.connect('mongodb://localhost/registration', { useNewUrlParser: true });
-var db = mongoose.connection;
+// mongoose.connect('mongodb+srv://phuong:nodejsproject@projectterm-ee5pq.mongodb.net/test?retryWrites=true', { useNewUrlParser: true });
+// var db = mongoose.connection;
 
 var app = express();
 
@@ -33,10 +33,10 @@ app.use(
     session({
         secret: 'junior',
         resave: true,
-        saveUninitialized: false,
-        store: new MongoStore(
-            {mongooseConnection: db
-            })
+        saveUninitialized: false
+        // store: new MongoStore(
+        //     {mongooseConnection: db
+        //     })
     }));
 
 app.use(expressValidator());
@@ -113,7 +113,7 @@ app.post('/register', function(req, res) {
                         res.redirect('/register');
                     }else {
                         //req.session.userId = user._id
-                        ID = user._id;
+                        // ID = user._id;
                         res.redirect('/created');
                     }
                 });
