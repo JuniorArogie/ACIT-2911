@@ -43,9 +43,11 @@ app.use(expressValidator());
 
 
 app.get('/', (request, response) => {
+    //console.log(request.session);
     response.render('home.hbs', {
         title: 'Home Page',
         head: 'Can You Math?'
+
 
     });
 });
@@ -55,7 +57,12 @@ function isAuthenticated(request, response, next) {
         console.log(request.session.passport);
         next();
     } else {
-        response.redirect('/');
+        response.render('home.hbs', {
+            title: 'Home Page',
+            head: 'Can You Math?'
+
+
+        });
     }
 }
 
@@ -143,7 +150,7 @@ app.post('/verify', function(req, res) {
             if (user === null){
                 res.end('Invalid User');
             }else if(user.username === req.body.username && user.password === req.body.password) {
-                res.redirect('/mathgame');
+                res.render('user.hbs');
             }else {
                 res.end("The username or password you entered is incorrect")
             }
@@ -152,24 +159,27 @@ app.post('/verify', function(req, res) {
     }
 });
 
+// USER PROFILE
+app.get(`/user/:name`, (request, response) => {
 
 
-app.get('/profile', function (req, res, next) {
     var db = utils.getDb();
-    db.collection('registration').findById({_id: ID}, function (error, user) {
-            if (error) {
-                return next(error);
-            } else {
-                if (user === null) {
-                    var err = new Error('Not authorized! Go back!');
-                    err.status = 400;
-                    return next(err);
-                } else {
-                    //return res.send('<h1>Name: </h1>' + user.fname + '<h2>Username: </h2>' + user.username + '<br><a type="button" href="/logout">Logout</a>')
-                }
-            }
-        });
+    var user_name = request.params.name;
+    db.collection('registration').find({username: user_name}).toArray((err,docs) => {
+        if (err) {
+            console.log("Unable to get user");
+        }
+        response.render('user.hbs', {
+            title: 'User Profile',
+            username: docs[0].username,
+            first_name: docs[0].first_name,
+            last_name: docs[0].last_name
+        })
+
+    })
+
 });
+
 
 app.get('/logout', function (req, res, next) {
     if (req.session) {
@@ -192,7 +202,6 @@ app.get('/register', (request, response) => {
 
     })
 });
-
 
 app.get('/verify', (request, response) => {
     response.render('login.hbs', {
