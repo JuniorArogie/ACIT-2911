@@ -12,9 +12,6 @@ const flash = require('connect-flash');
 
 
 
-// mongoose.connect('mongodb+srv://phuong:nodejsproject@projectterm-ee5pq.mongodb.net/test?retryWrites=true', { useNewUrlParser: true });
-// var db = mongoose.connection;
-
 var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials');
@@ -150,6 +147,29 @@ app.post('/verify', function(req, res) {
             //authenticate = req.session.userId = user._id
         });
     }
+});
+
+app.get('/profile/:name', function(request, response) {
+    var db = utils.getDb();
+    var user_name = request.params.name;
+    db.collection('registration').find({username: user_name}).toArray((err, docs) => {
+        if(err){
+            console.log('Unable to get user');
+        }
+        response.render('account_management.hbs', {
+            title: 'Home page',
+            username: docs[0].username,
+            password: docs[0].password,
+            first_name: docs[0].first_name,
+            last_name: docs[0].last_name,
+            checkings: docs[0].checkings,
+            savings: docs[0].savings,
+            email: docs[0].email,
+            phone_num: docs[0].phone_num,
+            pages: ['account_management', 'currency']
+        })
+
+    })
 });
 
 
