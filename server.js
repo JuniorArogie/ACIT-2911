@@ -147,7 +147,9 @@ app.post('/verify', function(req, res) {
             if (user === null){
                 res.end('Invalid User');
             }else if(user.username === req.body.username && user.password === req.body.password) {
-                res.render('user.hbs');
+                res.render('welcome.hbs', {
+                    username: username
+                });
             }else {
                 res.end("The username or password you entered is incorrect")
             }
@@ -157,6 +159,25 @@ app.post('/verify', function(req, res) {
 });
 
 
+// USER PROFILE
+app.get(`/profile/:name`, (request, response) => {
+
+    var db = utils.getDb();
+    var user_name = request.params.name;
+    db.collection('registration').find({username: user_name}).toArray((err,docs) => {
+        if (err) {
+            console.log("Unable to get user");
+        }
+        response.render('user.hbs', {
+            title: 'User Profile',
+            username: docs[0].username,
+            first_name: docs[0].fname,
+            last_name: docs[0].lname
+        })
+
+    })
+
+});
 
 
 app.get('/logout', function (req, res, next) {
