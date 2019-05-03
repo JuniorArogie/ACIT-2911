@@ -194,7 +194,6 @@ app.get('/logout', function (req, res, next) {
 });
 
 
-
 app.get('/register', (request, response) => {
     response.render('add.hbs', {
         title: 'Register',
