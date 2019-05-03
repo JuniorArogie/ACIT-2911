@@ -11,7 +11,6 @@ const passport = require('passport');
 const flash = require('connect-flash');
 
 
-
 var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials');
@@ -67,7 +66,7 @@ function isAuthenticated(request, response, next) {
 
 var ID;
 
-app.get('/mathgame', isAuthenticated, (request, response) => {
+app.get('/mathgame', (request, response) => {
     response.render('game.hbs', {
         title: 'Math Game',
         head: 'Welcome To The Game Center',
@@ -87,24 +86,23 @@ app.post('/register', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
     var password2 = req.body.password2;
-    var text = req.body.text;
-
-    req.checkBody('fname', 'First Name is required').notEmpty();
-    req.checkBody('lname', 'Last Name is required').notEmpty();
-    req.checkBody('username', 'Username is required').notEmpty();
-    req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('password2', 'Password does not match').equals(req.body.password);
-    req.checkBody('password', 'Password cannot be less than 8 characters').isLength({ min: 8, max:20 });
 
 
-    const errors = req.validationErrors();
-    if(errors){
-        req.session.errors = errors;
-        res.redirect('/register');
-    }else{
+    if (password.length < 8){
+        res.render('add.hbs', {
+            text: "Password must have at least 8 characters "
+        });
+    }
+    else if (password !== password2) {
+        res.render('add.hbs', {
+            text: "Passwords do not match"
+        });
+    }
+    else {
         req.session.success = true;
 
         var db = utils.getDb();
+
         db.collection('registration').findOne({username: req.body.username}, function(err, user) {
             if (user == null){
                 db. collection('registration').insertOne({
@@ -114,17 +112,20 @@ app.post('/register', function(req, res) {
                     password: password2,
                     password2: password2,
 
-                }, (err, result) => {
+                }, (err) => {
                     if (err){
-                        res.redirect('/register');
+                        res.end(err);
                     }else {
-                        //req.session.userId = user._id
-                        // ID = user._id;
-                        res.redirect('/created');
+                        res.render('add.hbs', {
+                            text2: "User has been created"
+                        });
                     }
                 });
             }else {
-                res.end("Username already exists")
+                res.render('add.hbs', {
+                    text: "Username already exists"
+                });
+
             }
         })
         db.close();
@@ -148,13 +149,16 @@ app.post('/verify', function(req, res) {
         var db = utils.getDb();
         db.collection('registration').findOne({username: req.body.username}, function(err, user) {
             if (user === null){
-                res.end('Invalid User');
-            }else if(user.username === req.body.username && user.password === req.body.password) {
+                res.render('login.hbs', {
+                    text: "Invalid User"
+                });            }else if(user.username === req.body.username && user.password === req.body.password) {
                 res.render('welcome.hbs', {
                     username: username
                 });
             }else {
-                res.end("The username or password you entered is incorrect")
+                res.render('login.hbs', {
+                    text: "The username or password you entered is incorrect"
+                });
             }
             //authenticate = req.session.userId = user._id
         });
@@ -239,4 +243,3 @@ app.listen(8080, () => {
     utils.init();
 
 });
-
