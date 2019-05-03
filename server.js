@@ -37,7 +37,9 @@ app.use(
     }));
 
 app.use(expressValidator());
-
+if(!module.parent){
+    app.listen(8080);
+}
 
 app.get('/', (request, response) => {
     //console.log(request.session);
@@ -125,6 +127,7 @@ app.post('/register', function(req, res) {
                 res.end("Username already exists")
             }
         })
+        db.close();
     }
 });
 
@@ -155,7 +158,10 @@ app.post('/verify', function(req, res) {
             }
             //authenticate = req.session.userId = user._id
         });
+        db.close();
     }
+
+
 });
 
 
@@ -175,7 +181,10 @@ app.get(`/profile/:name`, (request, response) => {
             last_name: docs[0].lname
         })
 
-    })
+
+    });
+
+    db.close();
 
 });
 

@@ -1,10 +1,10 @@
 {
-  "name": "AgileProject",
+  "name": "agileproject",
   "version": "1.0.0",
-  "description": "",
+  "description": "A web-page for registration/login and a math gameplay",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node server.js"
   },
   "keywords": [],
@@ -23,5 +23,23 @@
     "mongoose": "^5.5.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuniorArogie/ACIT-2911.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JuniorArogie/ACIT-2911/issues"
+  },
+  "homepage": "https://github.com/JuniorArogie/ACIT-2911#readme"
 }
