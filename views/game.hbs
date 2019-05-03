@@ -28,8 +28,9 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="/">Home </a>
-            <a class="nav-item nav-link active" href="/register">Register <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/profile">Profile </a>
+            <a class="nav-item nav-link active" href="/mathgame">Math<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/profile">Profile</a>
+            <a class="nav-item nav-link right" href="/logout">Logout</a>
         </div>
     </div>
 </nav>
@@ -37,17 +38,19 @@
 <div align="center">
     <h2>{{head}}</h2>
 </div><br>
+<!--<form method="POST" action="/math">
 
 <div align="center" id="board">
     <table>
         <tr >
             <td height="100">
-                <div align="center" id="random1">Calculation</div>
+                &lt;!&ndash;<div align="center" >Calculation</div>&ndash;&gt;
+                <p align="center"></p>
             </td>
         </tr>
         <br>
         <tr>
-            <button onclick="generate()" type="button" style="padding: 5px">Generate</button>
+            <button onclick="" type="button" style="padding: 5px">Generate</button>
         </tr><br>
         <tr>
             <button onclick="Save()" type="submit" style="padding: 5px">Save</button>
@@ -55,9 +58,9 @@
 
         <tr>
             <td>
-                <form id="ClearForm">
+                <form method="post" action="/game">
                     <label>Answer:</label>
-                    <label for="insert"></label><input type="number" id="insert" >
+                    <label for="answer"></label><input type="number" id="answer" name="answer">
                     <button onclick="Check()" type="button" >Check</button>
                 </form>
             </td>
@@ -79,23 +82,31 @@
         </tr>
     </table>
 </div>
+</form>-->
+
+<div class="form-group btn-group">
+    <form action="/game" method="POST">
+        <!-- <label for="stocksearch">Search your api 2</label> -->
+        <input type="text" class="form-control" name='stocksearch' id="stocksearch" placeholder="">
+        <p>&nbsp;</p>
+        <input type="button" class="btn btn-primary" value="Generate">
+    </form>
+
+</div>
 
 <script>
-    var equals;
-    var correct_value = parseInt(document.getElementById('correct').innerHTML);
-    var wrong_value = parseInt(document.getElementById('wrong').innerHTML);
-    var correct_list, wrong_list;
-    const fs = require('fs');
-    var file = "game_state.json";
+    // var equals;
+    // var correct_value = parseInt(document.getElementById('correct').innerHTML);
+    // var wrong_value = parseInt(document.getElementById('wrong').innerHTML);
+    // var correct_list, wrong_list;
 
-
-    function generate() {
-       var a = Math.floor((Math.random() * 10));
-       var b = Math.floor((Math.random() * 10));
-       var format = (a + " * " + b);
-       equals = (a * b);
-        document.getElementById("random1").innerHTML = format;
-    }
+    // function generate() {
+    //    var a = Math.floor((Math.random() * 10));
+    //    var b = Math.floor((Math.random() * 10));
+    //    var format = (a + " * " + b);
+    //    equals = (a * b);
+    //     document.getElementById("random1").innerHTML = format;
+    // }
 
     function Check() {
         if (document.getElementById("insert").value === ""){
@@ -117,33 +128,6 @@
                 document.getElementById("ClearForm").reset();
                 generate()
             }
-        }
-    }
-
-    function Save(){
-        if (fs.existsSync(file)) {
-            var readStats = fs.readFileSync(file);
-            var stat_list = JSON.parse(readStats);
-            alert(stat_list);
-            alert("go");
-
-            //stat_list.wins = correct_list;
-            //stat_list.losses  = wrong_list;
-
-         /*   stat_list['wins'] = correct_list;
-            stat_list['losses'] = wrong_list;*/
-
-            stat_list.forEach(function(elm){
-                elm.wins = correct_list;
-                elm.losses = wrong_list
-            });
-
-            var result = JSON.stringify(stat_list, null, 2);
-
-            fs.writeFileSync(file, result, function (err) {
-                if (err){
-                    console.log('Could Not Add!')}
-            });
         }
     }
 </script>

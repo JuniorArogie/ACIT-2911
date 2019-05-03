@@ -3,97 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" type="text/css">
+    <link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
 
     <style>
-        .footerstyle{
-            background-color: lightgray;
-            padding-top: 5px;
-            padding-right: 10px;
-            padding-bottom: 5px;
-            font-family: Cambria, serif;
-            text-align: right;
-            font-size:10pt;
-            color: white;
-        }
-
-
         .bgcolor{
             background-color: #DDDDDD;
         }
     </style>
 </head>
-<body class="bgcolor">
+<body class="bgcolor justify-content-lg-center">
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">JAVPY Industries</a>
+    <a class="navbar-brand" href="/">CanYouMath?</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/register">Register<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/verify">Sign In</a>
+                <a class="nav-link" href="/verify">Sign In </a>
             </li>
 
         </ul>
     </div>
 </nav>
-<br>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-<div class="container" style="margin-top: 2em;">
+<div class="container" style="margin-top: 4em;">
     <div class="panel panel-primary">
         <div class="panel-body">
-            <form method="POST" action="/register">
-                <div class="form-group">
-                    <label class="col-md-4">First Name</label>
+            <form class="form-signin" method="post" action="/register">
+                <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
+                <label for="inputFname" class="sr-only">First Name</label>
+                <input type="text" id="inputFname" class="form-control" size="4" name="fname" placeholder="First Name" required>
+
+                <label for="inputLname" class="sr-only">Last Name</label>
+                <input type="password" id="inputLname" class="form-control" size="10" name="lname" placeholder="Last Name" required>
+
+                <label for="inputUsername" class="sr-only">Username</label>
+                <input type="text" id="inputUsername" class="form-control" size="4" name="username" placeholder="Username" required>
+
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" size="10" name="password" placeholder="Password" required>
+
+                <label for="inputCPassword" class="sr-only">Confirm Password</label>
+                <input type="text" id="inputCPassword" class="form-control" size="4" name="password2" placeholder="Confirm Password" required>
+
+                <div class="checkbox mb-3">
                     <label>
-                        <input type="text" class="form-control" name="fname"/>
+                        <input type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4">Last Name</label>
-                    <label>
-                        <input type="text" class="form-control" name="lname"/>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4">Username</label>
-                    <label>
-                        <input type="text" class="form-control" name="username"/>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4">Password</label>
-                    <label>
-                        <input type="password" class="form-control" name="password"/>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4">Confirm Password</label>
-                    <label>
-                        <input type="password" class="form-control" name="password2"/>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Create my account</button>
-                </div>
-                <div>
-                    <p class="font-weight-bold" name="text"></p>
-                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
             </form>
         </div>
     </div>
 </div>
+
+
 
 {{# if errors }}
     {{# each errors }}
@@ -102,13 +75,9 @@
 {{/if}}
 
 </body>
-<br><br><br><br>
-<footer class="footerstyle bg-dark">
-    ⒸJAVPY Copyright 2019 - All Rights Reserverd
-</footer>
+<div align="center">{{> footer}}</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
 </html>
-
