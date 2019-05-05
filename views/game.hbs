@@ -12,14 +12,6 @@
             font-size: 25px;
             position: center;
         }
-        #result{
-            color: red;
-            font-size: 15px;
-        }
-        #board{
-            border: 5px;
-            background-color: beige;
-        }
     </style>
 
 </head>
@@ -85,30 +77,45 @@
 </form>-->
 
 <div class="form-group btn-group">
-    <form action="/game" method="POST">
-        <!-- <label for="stocksearch">Search your api 2</label> -->
-        <input type="text" class="form-control" name='stocksearch' id="stocksearch" placeholder="">
-        <p>&nbsp;</p>
-        <input type="button" class="btn btn-primary" value="Generate">
+    <form action="/gameplay" method="POST">
+        <p>Calculation</p>
+        <p>{{calculation}}</p>
+
+        <input type="submit" class="btn btn-primary" value="Generate">
+    </form>
+
+</div>
+
+<div class="form-group btn-group">
+    <form action="/math_answer" method="POST">
+
+        <label for="answer"></label><input type="number" step="any" id="answer" name="answer">
+        <p>{{result}}</p>
+        <p>{{correct_answer}}</p>
+
+
+        <input type="submit" class="btn btn-primary" value="Check">
     </form>
 
 </div>
 
 <script>
-    // var equals;
-    // var correct_value = parseInt(document.getElementById('correct').innerHTML);
-    // var wrong_value = parseInt(document.getElementById('wrong').innerHTML);
-    // var correct_list, wrong_list;
+/*
+    var equals;
+    var correct_value = parseInt(document.getElementById('correct').innerHTML);
+    var wrong_value = parseInt(document.getElementById('wrong').innerHTML);
+    var correct_list, wrong_list;
 
-    // function generate() {
-    //    var a = Math.floor((Math.random() * 10));
-    //    var b = Math.floor((Math.random() * 10));
-    //    var format = (a + " * " + b);
-    //    equals = (a * b);
-    //     document.getElementById("random1").innerHTML = format;
-    // }
+    function generate() {
+       var a = Math.floor((Math.random() * 10));
+       var b = Math.floor((Math.random() * 10));
+       var format = (a + " * " + b);
+       equals = (a * b);
+        document.getElementById("random1").innerHTML = format;
+    }
+*/
 
-    function Check() {
+/*    function Check() {
         if (document.getElementById("insert").value === ""){
             document.getElementById("result").innerHTML = "An answer is required!"
         }else {
@@ -129,7 +136,8 @@
                 generate()
             }
         }
-    }
+    }*/
+
 </script>
 </body>
 </html>
