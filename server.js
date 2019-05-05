@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
+const request = require('request');
 
 
 var app = express();
@@ -56,13 +57,62 @@ function isAuthenticated(request, response, next) {
         response.render('home.hbs', {
             title: 'Home Page',
             head: 'Can You Math?'
-
-
         });
     }
 }
 
-var ID;
+
+const getMath = async () => {
+    try {
+        var a = Math.floor(Math.random() * 10) + 1;
+        var b = Math.floor(Math.random() * 10) + 1;
+        var op = ["*", "+", "/", "-"][Math.floor(Math.random()*4)];
+        return {'a':a, 'b':b, 'op':op}
+    } catch (error) {
+        console.log('Error');
+    }
+};
+
+var question, question_result;
+
+app.post('/gameplay',(req, res) =>{
+
+    getMath().then((result) => {
+        var a = result.a, b = result.b, op = result.op;
+        question = "How much is " + a + " " + op + " " + b + "?"
+        question_result = eval(a + op + b)
+
+        res.render('game.hbs', {
+            calculation: question
+        });
+    }).catch((error) => {
+        res.render('game.hbs', {
+            calculation: `Error message: ${error}`
+        });
+    });
+
+});
+
+
+app.post('/math_answer',(req, res) =>{
+    var answer = parseInt(req.body.answer);
+    var correct, wrong;
+
+    if (answer === question_result){
+        correct +=1
+        res.render('game',{
+            result: "correct",
+        })
+    }else {
+        wrong +=1
+        res.render('game',{
+            result: "wrong",
+
+            correct_answer: `The correct answer is ${question_result}`
+        })
+    }
+});
+
 
 app.get('/mathgame', (request, response) => {
     response.render('game.hbs', {
@@ -161,7 +211,6 @@ app.post('/verify', function(req, res) {
         });
     }
 });
-
 
 // USER PROFILE
 app.get(`/profile/:name`, (request, response) => {
