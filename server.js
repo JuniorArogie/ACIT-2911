@@ -99,12 +99,10 @@ app.post('/math_answer',(req, res) =>{
     var correct, wrong;
 
     if (answer === question_result){
-        correct +=1
         res.render('game',{
             result: "correct",
         })
     }else {
-        wrong +=1
         res.render('game',{
             result: "wrong",
 
