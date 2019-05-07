@@ -113,24 +113,42 @@ app.post('/math_answer',(req, res) =>{
     var correct, wrong;
 
     if (answer === question_result){
-        res.render('game',{
-            result: "correct",
+
+        getMath().then((result) => {
+            var a = result.a, b = result.b, op = result.op;
+            var question = "How much is " + a + " " + op + " " + b + "?";
+
+            res.render('game',{
+                result: "correct",
+                calculation: question
+            })
         })
     }else {
-        res.render('game',{
-            result: "wrong",
 
-            correct_answer: `The correct answer is ${question_result}`
+        getMath().then((result) => {
+            var a = result.a, b = result.b, op = result.op;
+            var question = "How much is " + a + " " + op + " " + b + "?";
+
+
+            res.render('game', {
+                result: "wrong",
+                calculation: question,
+
+                correct_answer: `The correct answer is ${question_result}`
+            })
         })
     }
 });
 
 
 app.get('/mathgame', (request, response) => {
+
+    // startCountdown();
     response.render('game.hbs', {
         title: 'Math Game',
         head: 'Welcome To The Game Center',
     });
+
 });
 
 app.get('/created', (request, response) => {
