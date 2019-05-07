@@ -49,7 +49,7 @@ app.get('/', (request, response) => {
     });
 });
 
-function isAuthenticated(request, response, next) {
+/*function isAuthenticated(request, response, next) {
     if (request.session.passport !== undefined) {
         console.log(request.session.passport);
         next();
@@ -59,6 +59,20 @@ function isAuthenticated(request, response, next) {
             head: 'Can You Math?'
         });
     }
+}*/
+
+function startCountdown(seconds){
+    var counter = seconds;
+
+    var interval = setInterval(() => {
+        console.log(counter);
+    counter--;
+
+    if(counter < 0 ){
+        clearInterval(interval);
+        console.log('Game Over');
+    }
+}, 1000);
 }
 
 
@@ -79,8 +93,8 @@ app.post('/gameplay',(req, res) =>{
 
     getMath().then((result) => {
         var a = result.a, b = result.b, op = result.op;
-        question = "How much is " + a + " " + op + " " + b + "?"
-        question_result = eval(a + op + b)
+        question = "How much is " + a + " " + op + " " + b + "?";
+        question_result = eval(a + op + b);
 
         res.render('game.hbs', {
             calculation: question
