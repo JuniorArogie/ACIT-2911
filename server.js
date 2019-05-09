@@ -76,18 +76,36 @@ function startCountdown(seconds){
 }
 
 
+// const getMath = async () => {
+//     try {
+//         var a = Math.floor(Math.random() * 10) + 1;
+//         var b = Math.floor(Math.random() * 10) + 1;
+//         var op = ["*", "+", "/", "-"][Math.floor(Math.random()*4)];
+//         return {'a':a, 'b':b, 'op':op}
+//     } catch (error) {
+//         console.log('Error');
+//     }
+// };
+
+
 const getMath = async () => {
     try {
         var a = Math.floor(Math.random() * 10) + 1;
         var b = Math.floor(Math.random() * 10) + 1;
-        var op = ["*", "+", "/", "-"][Math.floor(Math.random()*4)];
+        // var a = 10;
+        // var b = 2;
+        var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
+
+
         return {'a':a, 'b':b, 'op':op}
     } catch (error) {
         console.log('Error');
     }
 };
 
+
 var question, question_result;
+
 
 app.post('/gameplay',(req, res) =>{
 
@@ -96,7 +114,7 @@ app.post('/gameplay',(req, res) =>{
         question = "How much is " + a + " " + op + " " + b + "?";
         question_result = eval(a + op + b);
 
-        res.render('game.hbs', {
+        res.render('game.hbs',{
             calculation: question
         });
     }).catch((error) => {
@@ -107,7 +125,6 @@ app.post('/gameplay',(req, res) =>{
 
 });
 
-
 app.post('/math_answer',(req, res) =>{
     var answer = parseInt(req.body.answer);
     var correct, wrong;
@@ -116,11 +133,14 @@ app.post('/math_answer',(req, res) =>{
 
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
-            var question = "How much is " + a + " " + op + " " + b + "?";
+            var question_new = "How much is " + a + " " + op + " " + b + "?";
+            question_result_new = eval(a + op + b);
+            question_result = question_result_new;
+            correct_answer = eval(a + op + b);
 
             res.render('game',{
                 result: "correct",
-                calculation: question
+                calculation: question_new
             })
         })
     }else {
@@ -128,13 +148,15 @@ app.post('/math_answer',(req, res) =>{
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
             var question = "How much is " + a + " " + op + " " + b + "?";
+            question_result_new = eval(a + op + b);
+            question_result = question_result_new;
 
 
             res.render('game', {
                 result: "wrong",
-                calculation: question,
+                nextquestion: question,
 
-                correct_answer: `The correct answer is ${question_result}`
+                correct_answer: `The correct answer is ${correct_answer}`
             })
         })
     }
@@ -143,7 +165,6 @@ app.post('/math_answer',(req, res) =>{
 
 app.get('/mathgame', (request, response) => {
 
-    // startCountdown();
     response.render('game.hbs', {
         title: 'Math Game',
         head: 'Welcome To The Game Center',
