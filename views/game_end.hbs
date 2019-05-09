@@ -75,30 +75,9 @@
     </table>
 </div>
 </form>-->
-
-<div class="form-group btn-group">
-    <form action="/gameplay" method="POST">
-        <p>Calculation</p>
-        <p>{{calculation}}</p>
-        <p>{{nextquestion}}</p>
-
-        <input type="submit" class="btn btn-primary" value="Begin">
-    </form>
-
-</div>
-
-<div class="form-group btn-group">
-    <form action="/math_answer" method="POST">
-
-        <label for="answer"></label><input type="number" step="any" id="answer" name="answer">
-        <p>{{result}}</p>
-        <p>{{correct_answer}}</p>
+<h3>Time Up</h3>
 
 
-        <input type="submit" class="btn btn-primary" value="Check">
-    </form>
-
-</div>
 
 <script>
 /*
@@ -139,10 +118,7 @@
         }
     }*/
 
-setTimeout(function() {
-    //after 2 seconds
-    window.location = "/game_end";
-}, 5000)
+
 
 </script>
 </body>

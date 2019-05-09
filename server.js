@@ -133,7 +133,7 @@ app.post('/math_answer',(req, res) =>{
 
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
-            var question_new = "How much is " + a + " " + op + " " + b + "?";
+            var question_new = "Next Question: How much is " + a + " " + op + " " + b + "?";
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
             correct_answer = eval(a + op + b);
@@ -147,7 +147,7 @@ app.post('/math_answer',(req, res) =>{
 
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
-            var question = "How much is " + a + " " + op + " " + b + "?";
+            var question = "Next Question: How much is " + a + " " + op + " " + b + "?";
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
 
@@ -160,6 +160,16 @@ app.post('/math_answer',(req, res) =>{
             })
         })
     }
+});
+
+app.get('/game_end', (request, response) => {
+    //console.log(request.session);
+    response.render('game_end.hbs', {
+        title: 'GameEnd Page',
+        head: 'Can You Math?'
+
+
+    });
 });
 
 
