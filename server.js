@@ -106,6 +106,7 @@ const getMath = async () => {
 
 var question, question_result;
 
+var n = 0;
 
 app.post('/gameplay',(req, res) =>{
 
@@ -113,6 +114,7 @@ app.post('/gameplay',(req, res) =>{
         var a = result.a, b = result.b, op = result.op;
         question = "How much is " + a + " " + op + " " + b + "?";
         question_result = eval(a + op + b);
+        n += 1;
 
         res.render('game.hbs',{
             calculation: question
@@ -134,6 +136,7 @@ app.post('/math_answer',(req, res) =>{
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
             var question_new = "Next Question: How much is " + a + " " + op + " " + b + "?";
+            n += 1;
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
             correct_answer = eval(a + op + b);
@@ -148,8 +151,10 @@ app.post('/math_answer',(req, res) =>{
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
             var question = "Next Question: How much is " + a + " " + op + " " + b + "?";
+            n += 1;
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
+            correct_answer_false = eval(a + op + b);
 
 
             res.render('game', {
@@ -160,6 +165,10 @@ app.post('/math_answer',(req, res) =>{
             })
         })
     }
+
+    if (n === 10) {
+        res.redirect('/game_end')
+    }
 });
 
 app.get('/game_end', (request, response) => {
@@ -167,7 +176,6 @@ app.get('/game_end', (request, response) => {
     response.render('game_end.hbs', {
         title: 'GameEnd Page',
         head: 'Can You Math?'
-
 
     });
 });
