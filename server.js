@@ -66,13 +66,13 @@ function startCountdown(seconds){
 
     var interval = setInterval(() => {
         console.log(counter);
-    counter--;
+        counter--;
 
-    if(counter < 0 ){
-        clearInterval(interval);
-        console.log('Game Over');
-    }
-}, 1000);
+        if(counter < 0 ){
+            clearInterval(interval);
+            console.log('Game Over');
+        }
+    }, 1000);
 }
 
 
@@ -103,8 +103,10 @@ const getMath = async () => {
     }
 };
 
+//EASY LEVEL MATH QUESTION
 
 var question, question_result;
+
 
 var n = 0;
 
@@ -142,7 +144,7 @@ app.post('/math_answer',(req, res) =>{
             correct_answer = eval(a + op + b);
 
             res.render('game',{
-                result: "correct",
+                result: "CORRECT",
                 calculation: question_new
             })
         })
@@ -158,15 +160,14 @@ app.post('/math_answer',(req, res) =>{
 
 
             res.render('game', {
-                result: "wrong",
+                result: "WRONG",
                 nextquestion: question,
-
-                correct_answer: `The correct answer is ${correct_answer}`
+                //correct_answer: `The correct answer is ${correct_answer}`
             })
         })
     }
 
-    if (n === 10) {
+    if (n === 5) {
         res.redirect('/game_end')
     }
 });
@@ -177,6 +178,7 @@ app.get('/game_end', (request, response) => {
         title: 'GameEnd Page',
         head: 'Can You Math?'
 
+
     });
 });
 
@@ -184,6 +186,94 @@ app.get('/game_end', (request, response) => {
 app.get('/mathgame', (request, response) => {
 
     response.render('game.hbs', {
+        title: 'Math Game',
+        head: 'Welcome To The Game Center',
+    });
+
+});
+
+//DIFFICULT LEVEL MATH QUESTIONS
+var t = 0;
+
+const getMath2 = async () => {
+    try {
+        var a = Math.floor(Math.random() * 20) + 2;
+        var b = Math.floor(Math.random() * 20) + 2;
+
+        var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
+        t +=1;
+
+
+
+        return {'a':a, 'b':b, 'op':op}
+    } catch (error) {
+        console.log('Error');
+    }
+};
+
+var question2, question_result2;
+
+app.post('/gameplay2',(req, res) =>{
+
+    getMath2().then((result) => {
+        var a = result.a, b = result.b, op = result.op;
+        question2 = "How much is " + a + " " + op + " " + b + "?";
+        question_result2 = eval(a + op + b);
+
+        res.render('game2.hbs',{
+            calculation: question2
+        });
+    }).catch((error) => {
+        res.render('game2.hbs', {
+            calculation: `Error message: ${error}`
+        });
+    });
+
+});
+
+app.post('/math2_answer',(req, res) =>{
+    var answer = parseInt(req.body.answer);
+
+    if (answer === question_result2){
+
+        getMath2().then((result) => {
+            var a = result.a, b = result.b, op = result.op;
+            var question_new2 = "Next Question: How much is " + a + " " + op + " " + b + "?";
+            question_result_new = eval(a + op + b);
+            question_result2 = question_result_new;
+            correct_answer = eval(a + op + b);
+
+            res.render('game2',{
+                result: "CORRECT",
+                calculation: question_new2
+            })
+        })
+    }else {
+
+        getMath2().then((result) => {
+            var a = result.a, b = result.b, op = result.op;
+            var question = "Next Question: How much is " + a + " " + op + " " + b + "?";
+            //correct_answer = eval(a + op + b);
+            //question_result = question_result_new;
+
+
+            res.render('game2', {
+                result: "wrong",
+                nextquestion: question,
+
+                //correct_answer: `The correct answer is ${question_result2}`
+            })
+        })
+    }
+
+    if (t === 5) {
+        res.redirect('/game_end')
+    }
+});
+
+app.get('/mathgame2', (request, response) => {
+
+    response.render('game2.hbs', {
         title: 'Math Game',
         head: 'Welcome To The Game Center',
     });
