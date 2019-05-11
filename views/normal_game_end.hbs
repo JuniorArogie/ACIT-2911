@@ -51,14 +51,15 @@
 <div align="center">
     <div class="form-group btn-group">
         <form action="/math_answer" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" required>
+            <label for="answer"></label><input type="number" step="any" id="answer" name="answer">
             <p>{{result}}</p>
             <input type="submit" class="btn btn-primary" value="Check">
             <p>{{correct_answer}}</p>
-            <p>{{status}}</p>
         </form>
     </div>
 </div>
+
+<p align="center" style="size: 25px; color: green">{{total}}</p>
 
 </body>
 
