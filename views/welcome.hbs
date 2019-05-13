@@ -3,26 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" type="text/css">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
 
+    <style>
+        .bgcolor{
+            background-image: url("background.jpg");
+        }
+    </style>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/">Home </a>
-            <a class="nav-item nav-link" href="/register">Register</a>
-            <a class="nav-item nav-link" href="/profile/{{username}}">Profile</a>
+<body class="bgcolor justify-content-lg-center">
 
-        </div>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: white">Welcome, {{username}}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/profile/{{username}}">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/">Sign Out</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Leaderboard</a>
+            </li>
+        </ul>
     </div>
 </nav>
-<div align="center" style="padding: 20px; color: darkred; font-size: 50px; font-family: Cambria,serif">
-    <p>{{head}}</p>
-    <p> Welcome {{username}} </p>
+
+<div class="table-responsive" align="center" style="padding-top: 12px">
+<table>
+    <tr>
+        <th colspan="2">
+            <div style="font-family: Cambria,serif; font-size: 20px; color: midnightblue">
+                <p align="center">Welcome to the Math Game.</p>
+                <p>Below are two difficulties for the game, Choose one to play!</p>
+            </div>
+        </th>
+    </tr>
+    <tr>
+        <td>
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="math_image.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">NORMAL DIFFICULTY</h5>
+                    <p class="card-text">You must answer <strong>10</strong> randomly generated math questions.
+                        The questions includes multiplication, addition and subtraction. When finished, the total amount of questions answered correctly will be tallied.</p>
+                    <a href="/mathgame/{{username}}" class="btn btn-primary">Play Game</a>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="math_image.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">HARD DIFFICULTY</h5>
+                    <p class="card-text">You must answer <strong>15</strong> randomly generated math questions.
+                        The questions includes multiplication, addition and subtraction. When finished, the total amount of questions answered correctly will be tallied.</p>
+                    <a href="/mathgame2/{{username}}" class="btn btn-primary">Play Game</a>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
 </div>
+
+<!--<div class="container">
+    &lt;!&ndash; Stack the columns on mobile by making one full-width and the other half-width &ndash;&gt;
+    <div class="row">
+        <div class="col-4" style="float: none; margin: 0 auto;">
+            <div style="font-family: Cambria,serif; font-size: 20px; color: midnightblue; ">
+               Welcome to the Math Game Below are two difficulties for the game, Choose one to play!
+            </div>
+        </div>
+    </div>
+
+
+    &lt;!&ndash; Columns are always 50% wide, on mobile and desktop &ndash;&gt;
+    <div class="row" style="float: none; margin: 0 auto;">
+        &lt;!&ndash;<div class="col-4" style="float: none; margin: 0 auto;">&ndash;&gt;
+            <div class="card col-4" style="float: none; margin: 0 auto;">
+                <img class="card-img-top" src="math_image.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">NORMAL DIFFICULTY</h5>
+                    <p class="card-text">You must answer <strong>10</strong> randomly generated math questions.
+                        The questions includes multiplication, addition and subtraction. When finished, the total amount of questions answered correctly will be tallied.</p>
+                    <a href="/mathgame/{{username}}" class="btn btn-primary">Play Game</a>
+                </div>
+            </div><br>
+        &lt;!&ndash;</div>&ndash;&gt;
+        &lt;!&ndash;<div class="col-4" style="float: none; margin: 0 auto;">&ndash;&gt;
+            <div class="card col-4" style="float: none; margin: 0 auto;">
+                <img class="card-img-top" src="math_image.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">HARD DIFFICULTY</h5>
+                    <p class="card-text">You must answer <strong>15</strong> randomly generated math questions.
+                        The questions includes multiplication, addition and subtraction. When finished, the total amount of questions answered correctly will be tallied.</p>
+                    <a href="/mathgame2/{{username}}" class="btn btn-primary">Play Game</a>
+                </div>
+            </div>
+        &lt;!&ndash;</div>&ndash;&gt;
+
+    </div>
+</div>-->
+
 </body>
-<div align="center">{{> footer}}</div>
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </html>
-

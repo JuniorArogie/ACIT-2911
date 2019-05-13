@@ -39,53 +39,43 @@
     </div>
 </nav>
 
-<!--<div align="center" style="padding-top: 20px">
-    <h1 style="font-family: Century Gothic, serif ">Welcome to NORMAL difficulty</h1>
-
-    <table>
-        <tr>
-            <td>
-                <div class="form-group btn-group">
-                    <form action="/gameplay/{{username}}" method="POST">
-                        <p style="font-size: 50px">{{calculation}}{{nextquestion}}</p>
-
-                    </form>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="form-group btn-group">
-                    <form action="/math_answer/{{username}}" method="POST">
-                        <label for="answer"></label><input type="number" step="any" id="answer" name="answer" required>
-                        <p>{{result}}</p>
-                        <input type="submit" class="btn btn-primary" value="Check" placeholder="Input Answer">
-                        <p>{{correct_answer}}</p>
-                        <p>{{status}}</p>
-                    </form>
-                </div>
-            </td>
-        </tr>
-    </table>
+<!--<div align="center">
+    <h1 style="font-family: Century Gothic, serif ">Welcome to HARD difficulty</h1>
+    <div class="form-group btn-group">
+        <form action="/gameplay2" method="POST">
+            <p style="size: 20px">GAME OVER</p>
+        </form>
+    </div>
 </div>-->
+<!--<div align="center">
+    <div class="form-group btn-group">
+        <form action="/mathgame2/{{username}}" method="GET">
+            <label for="answer"></label><input type="number" step="any" id="answer" name="answer">
+            <p>{{result}}</p>
+            <input type="submit" class="btn btn-primary" value="Play Again">
+            <p>{{correct_answer}}</p>
+        </form>
+    </div>
+</div>
+
+<p align="center" style="size: 25px; color: green">{{total}}</p>-->
+
 
 <div class="card w-50 h-50 text-white text-center bg-secondary mb-3" style="float: none; margin: 50px auto 0;">
 
     <div class="card-body">
-        <form action="/gameplay/{{username}}" method="POST" class="card-title">
-            <p style="font-size: 50px">{{calculation}}{{nextquestion}}</p>
+        <form action="/gameplay2" method="POST">
+            <p style="font-size: 50px">GAME OVER</p>
+        </form>
+        <form action="/mathgame2/{{username}}" method="GET">
+            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" placeholder="Input Answer"><br><br>
+            <input type="submit" class="btn btn-primary" value="Play Again">
+        </form><br>
 
-        </form>
-        <form action="/math_answer/{{username}}" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" placeholder="Input Answer" required><br><br>
-            <input type="submit" class="btn btn-primary" value="Check">
-        </form>
-        <div>
-        <p style="color: darkgreen; font-size: 25px">{{result}}</p><p style="color: darkred; font-size: 25px">{{result2}}</p>
-        </div>
+        <p align="center" style="size: 25px; color: darkgreen">{{total}}</p>
+
 
     </div>
-
 </div>
 
 </body>
