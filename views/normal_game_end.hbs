@@ -39,29 +39,45 @@
     </div>
 </nav>
 
-<div align="center">
+<!--<div align="center">
     <h1 style="font-family: Century Gothic, serif ">Welcome to NORMAL difficulty</h1>
     <div class="form-group btn-group">
         <form action="/gameplay" method="POST">
-            <p style="size: 20px">{{calculation}}</p>
-            <p style="size: 20px">{{nextquestion}}</p>
+            <p style="size: 20px">GAME OVER</p>
         </form>
     </div>
 </div>
 <div align="center">
     <div class="form-group btn-group">
-        <form action="/math_answer" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer">
-            <p>{{result}}</p>
-            <input type="submit" class="btn btn-primary" value="Check">
-            <p>{{correct_answer}}</p>
+        <form action="/gameplay" method="POST">
+            <p style="size: 20px">GAME OVER</p>
         </form>
     </div>
 </div>
 
-<p align="center" style="size: 25px; color: green">{{total}}</p>
+<p align="center" style="size: 25px; color: green">{{total}}</p>-->
+
+
+<div class="card w-50 h-50 text-white text-center bg-secondary mb-3" style="float: none; margin: 50px auto 0;">
+
+    <div class="card-body">
+        <form action="/gameplay" method="POST">
+            <p style="font-size: 50px">GAME OVER</p>
+        </form>
+        <form action="/mathgame/{{username}}" method="GET">
+            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" placeholder="Input Answer"><br><br>
+            <input type="submit" class="btn btn-primary" value="Play Again">
+        </form><br>
+
+        <p align="center" style="size: 25px; color: darkgreen">{{total}}</p>
+
+
+    </div>
+</div>
 
 </body>
+
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
