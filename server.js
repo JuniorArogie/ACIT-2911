@@ -49,65 +49,27 @@ app.get('/', (request, response) => {
     });
 });
 
-/*function isAuthenticated(request, response, next) {
-    if (request.session.passport !== undefined) {
-        console.log(request.session.passport);
-        next();
-    } else {
-        response.render('home.hbs', {
-            title: 'Home Page',
-            head: 'Can You Math?'
-        });
-    }
-}*/
-
-function startCountdown(seconds){
-    var counter = seconds;
-
-    var interval = setInterval(() => {
-        console.log(counter);
-        counter--;
-
-        if(counter < 0 ){
-            clearInterval(interval);
-            console.log('Game Over');
-        }
-    }, 1000);
-}
-
-
-// const getMath = async () => {
-//     try {
-//         var a = Math.floor(Math.random() * 10) + 1;
-//         var b = Math.floor(Math.random() * 10) + 1;
-//         var op = ["*", "+", "/", "-"][Math.floor(Math.random()*4)];
-//         return {'a':a, 'b':b, 'op':op}
-//     } catch (error) {
-//         console.log('Error');
-//     }
-// };
-
 
 const getMath = async () => {
     try {
         var a = Math.floor(Math.random() * 10) + 1;
         var b = Math.floor(Math.random() * 10) + 1;
-        // var a = 10;
-        // var b = 2;
         var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
-
 
         return {'a':a, 'b':b, 'op':op}
     } catch (error) {
         console.log('Error');
     }
 };
+var user_name;
+var question, question_result;
+var n = 1;
+var t = 1;
+var hard_correct = 0;
+var normal_correct = 0;
+
 
 //EASY LEVEL MATH QUESTION
-
-var question, question_result;
-
-
 
 
 app.post('/gameplay',(req, res) =>{
@@ -132,29 +94,26 @@ app.post('/gameplay',(req, res) =>{
 });
 
 
-var n = 1;
-var hard_correct = 0;
-var normal_correct = 0;
-
-app.post('/math_answer',(req, res) =>{
+app.post('/math_answer/:name',(req, res) =>{
     var answer = parseInt(req.body.answer);
-    // var normal_correct = 0;
-    // correct_value = normal_correct;
+
+    //user_name = request.params.name;
 
     if (answer === question_result){
 
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
-            var question_new = "Next Question: What is " + a + " " + op + " " + b + "?";
+            var question_new = "What is " + a + " " + op + " " + b + "?";
             n += 1;
             console.log("Right",n);
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
             normal_correct +=1;
-            console.log(normal_correct)
+            console.log(normal_correct);
 
             res.render('game',{
                 result: "CORRECT",
+                username: user_name,
                 calculation: question_new
             })
         })
@@ -162,14 +121,15 @@ app.post('/math_answer',(req, res) =>{
 
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
-            var question = "Next Question: What is " + a + " " + op + " " + b + "?";
+            var question = "What is " + a + " " + op + " " + b + "?";
             n += 1;
             console.log(n);
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
 
             res.render('game', {
-                result: "WRONG",
+                result2: "WRONG",
+                username: user_name,
                 nextquestion: question,
                 //correct_answer: `The correct answer is ${correct_answer}`
             })
@@ -179,8 +139,8 @@ app.post('/math_answer',(req, res) =>{
     var time = 0;
     if (n%5 === 0 && n > 1) {
         time += 1;
-        res.redirect('/normal_game_end');
-        console.log('if)');
+        res.redirect(`/normal_game_end/${user_name}`);
+        console.log(user_name);
         console.log(normal_correct);
         if (n > 5) {
         normal_correct = normal_correct - time*5;}
@@ -189,39 +149,7 @@ app.post('/math_answer',(req, res) =>{
 
 });
 
-app.get('/normal_game_end', (request, response) => {
-    //console.log(request.session);
-    response.render('normal_game_end.hbs', {
-        title: 'GameEnd Page',
-        head: 'Can You Math?',
-        total: `You Got ${normal_correct}/5`
-
-
-    });
-});
-
-app.get('/mathgame', (request, response) => {
-
-    getMath().then((result) => {
-        var a = result.a, b = result.b, op = result.op;
-        question = "What is " + a + " " + op + " " + b + "?";
-        question_result = eval(a + op + b);
-        // n += 1;
-        // console.log(n);
-
-        response.render('game.hbs',{
-            calculation: question,
-            title: 'Math Game',
-            head: 'Welcome To The Game Center',
-        });
-    }).catch((error) => {
-        console.log(error)
-    });
-
-});
-
 //DIFFICULT LEVEL MATH QUESTIONS
-var t = 1;
 
 const getMath2 = async () => {
     try {
@@ -229,9 +157,6 @@ const getMath2 = async () => {
         var b = Math.floor(Math.random() * 20) + 2;
 
         var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
-        t +=1;
-
-
 
         return {'a':a, 'b':b, 'op':op}
     } catch (error) {
@@ -259,14 +184,15 @@ app.post('/gameplay2',(req, res) =>{
 
 });
 
-app.post('/math2_answer',(req, res) =>{
+app.post('/math2_answer/:name',(req, res) =>{
+
     var answer = parseInt(req.body.answer);
 
     if (answer === question_result2){
 
         getMath2().then((result) => {
             var a = result.a, b = result.b, op = result.op;
-            var question_new2 = "Next Question: What is " + a + " " + op + " " + b + "?";
+            var question_new2 = "What is " + a + " " + op + " " + b + "?";
             t += 1;
             question_result_new = eval(a + op + b);
             question_result2 = question_result_new;
@@ -274,6 +200,7 @@ app.post('/math2_answer',(req, res) =>{
 
             res.render('game2',{
                 result: "CORRECT",
+                username: user_name,
                 calculation: question_new2
             })
         })
@@ -281,14 +208,15 @@ app.post('/math2_answer',(req, res) =>{
 
         getMath2().then((result) => {
             var a = result.a, b = result.b, op = result.op;
-            var question = "Next Question: What is " + a + " " + op + " " + b + "?";
+            var question = "What is " + a + " " + op + " " + b + "?";
             t += 1;
             question_result_new = eval(a + op + b);
             question_result2 = question_result_new;
 
 
             res.render('game2', {
-                result: "WRONG",
+                result2: "WRONG",
+                username: user_name,
                 nextquestion: question,
 
                 //correct_answer: `The correct answer is ${question_result2}`
@@ -299,24 +227,68 @@ app.post('/math2_answer',(req, res) =>{
     var time = 0;
     if (t%5 === 0 && t > 1) {
         time += 1;
-        res.redirect('/hard_game_end');
-        console.log('if)');
+        res.redirect(`/hard_game_end/${user_name}`);
         console.log(hard_correct);
-        if (n > 5) {
+        if (t > 5) {
             hard_correct = hard_correct - time*5;}
 
     }
 });
 
-app.get('/mathgame2', (request, response) => {
+//END OF ALL GAME CODE
+
+//NORMAL GAME GET ENDPOINT
+app.get('/mathgame/:name', (request, response) => {
+
+    user_name = request.params.name;
+
+    getMath().then((result) => {
+        var a = result.a, b = result.b, op = result.op;
+        question = "What is " + a + " " + op + " " + b + "?";
+        question_result = eval(a + op + b);
+        // n += 1;
+        // console.log(n);
+
+        response.render('game.hbs',{
+            calculation: question,
+            title: 'Math Game',
+            username: user_name,
+            head: 'Welcome To The Game Center',
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
+
+});
+
+app.get(`/normal_game_end/:name`, (request, response) => {
+
+    user_name = request.params.name;
+
+    response.render('normal_game_end.hbs', {
+        title: 'GameEnd Page',
+        username: user_name,
+        total: `You Got ${normal_correct}/5`
+
+
+    });
+});
+//END OF NORMAL GAME GET ENDPOINT
+
+//HARD GAME  GET ENDPOINT
+app.get('/mathgame2/:name', (request, response) => {
+
+    user_name = request.params.name;
+
 
     getMath2().then((result) => {
         var a = result.a, b = result.b, op = result.op;
-        question2 = "Whatis " + a + " " + op + " " + b + "?";
+        question2 = "What is " + a + " " + op + " " + b + "?";
         question_result2 = eval(a + op + b);
 
         response.render('game2.hbs',{
             calculation: question2,
+            username: user_name,
             title: 'Math Game',
 
         });
@@ -326,18 +298,20 @@ app.get('/mathgame2', (request, response) => {
 
 });
 
-app.get('/hard_game_end', (request, response) => {
+app.get('/hard_game_end/:name', (request, response) => {
     //console.log(request.session);
+    user_name = request.params.name;
+
     response.render('hard_game_end.hbs', {
         title: 'GameEnd Page',
-        head: 'Can You Math?',
+        username: user_name,
         total: `You Got ${hard_correct}/10`
 
 
     });
 });
+//END OF HARD GAME GET ENDPOINT
 
-//END OF ALL GAME CODE
 
 app.get('/created', (request, response) => {
     response.render('created.hbs', {
@@ -416,7 +390,8 @@ app.post('/verify', function(req, res) {
             if (user === null){
                 res.render('login.hbs', {
                     text: "Invalid User"
-                });            }else if(user.username === req.body.username && user.password === req.body.password) {
+                });
+            }else if(user.username === req.body.username && user.password === req.body.password) {
                 res.render('welcome.hbs', {
                     username: username
                 });
@@ -425,7 +400,6 @@ app.post('/verify', function(req, res) {
                     text: "The username or password you entered is incorrect"
                 });
             }
-            //authenticate = req.session.userId = user._id
         });
     }
 });
@@ -433,11 +407,25 @@ app.post('/verify', function(req, res) {
 // USER PROFILE
 app.get(`/profile/:name`, (request, response) => {
 
-    var db = utils.getDb();
     var user_name = request.params.name;
+
+    if(user_name === undefined) {
+        response.render('user_fail.hbs', {
+            title: 'User Fail',
+        });
+    }
+
+    var db = utils.getDb();
     db.collection('registration').find({username: user_name}).toArray((err,docs) => {
         if (err) {
             console.log("Unable to get user");
+            response.render('user_fail.hbs',{
+                title: 'User Fail',
+            })
+        }else if(username === undefined){
+            response.render('user_fail.hbs',{
+                title: 'User Fail',
+            })
         }
         response.render('user.hbs', {
             title: 'User Profile',
@@ -488,6 +476,15 @@ app.get('*', (request, response) => {
         error: 'Page Not Found'
     })
 });
+
+app.get('/profile/*', (request, response) => {
+    response.render('404.hbs', {
+        title: '404 Error',
+        head: 'Oops! 404',
+        error: 'Page Not Found'
+    })
+});
+
 
 app.listen(8080, () => {
     console.log('Server is up on the port 8080');
