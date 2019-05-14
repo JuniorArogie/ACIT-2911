@@ -8,7 +8,8 @@
 
     <style>
         .bgcolor{
-            background-image: url("background.jpg");
+            background: url("../bg5.jpg") no-repeat center;
+            background-size: 100%;
         }
     </style>
 </head>
@@ -33,6 +34,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Leaderboard</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome/{{username}}">Home</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -42,15 +46,15 @@
     <tr>
         <th colspan="2">
             <div style="font-family: Cambria,serif; font-size: 20px; color: midnightblue">
-                <p align="center">Welcome to the Math Game.</p>
-                <p>Below are two difficulties for the game, Choose one to play!</p>
+                <p align="center">Welcome to the Math Game.<br>
+                Below are two difficulties for the game, Choose one to play!</p>
             </div>
         </th>
     </tr>
     <tr>
         <td>
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="math_image.jpg" alt="Card image cap">
+            <div class="card bg-secondary mb-3" style="width: 18rem;">
+                <img class="card-img-top rounded mx-auto d-block" src="../math_image.jpg" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">NORMAL DIFFICULTY</h5>
                     <p class="card-text">You must answer <strong>10</strong> randomly generated math questions.
@@ -60,8 +64,8 @@
             </div>
         </td>
         <td>
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="math_image.jpg" alt="Card image cap">
+            <div class="card bg-secondary mb-3" style="width: 18rem;">
+                <img class="card-img-top" src="../math_image.jpg" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">HARD DIFFICULTY</h5>
                     <p class="card-text">You must answer <strong>15</strong> randomly generated math questions.
@@ -73,6 +77,7 @@
     </tr>
 </table>
 </div>
+
 
 <!--<div class="container">
     &lt;!&ndash; Stack the columns on mobile by making one full-width and the other half-width &ndash;&gt;

@@ -392,9 +392,10 @@ app.post('/verify', function(req, res) {
                     text: "Invalid User"
                 });
             }else if(user.username === req.body.username && user.password === req.body.password) {
-                res.render('welcome.hbs', {
-                    username: username
-                });
+                // res.render('welcome.hbs', {
+                //     username: username
+                // });
+                res.redirect(`/welcome/${username}`)
             }else {
                 res.render('login.hbs', {
                     text: "The username or password you entered is incorrect"
@@ -404,13 +405,25 @@ app.post('/verify', function(req, res) {
     }
 });
 
-// USER PROFILE
+
+
+// USER WELCOME PAGE AND PROFILE
+app.get('/welcome/:name', (request, response) => {
+
+    var user_name = request.params.name;
+
+    response.render('welcome.hbs', {
+        title: 'Welcome Page',
+        username: user_name,
+    })
+});
+
 app.get(`/profile/:name`, (request, response) => {
 
     var user_name = request.params.name;
 
     if(user_name === undefined) {
-        response.render('user_fail.hbs', {
+        response.render('404.hbs', {
             title: 'User Fail',
         });
     }
@@ -419,10 +432,7 @@ app.get(`/profile/:name`, (request, response) => {
     db.collection('registration').find({username: user_name}).toArray((err,docs) => {
         if (err) {
             console.log("Unable to get user");
-            response.render('user_fail.hbs',{
-                title: 'User Fail',
-            })
-        }else if(username === undefined){
+        }else if(user_name === undefined){
             response.render('user_fail.hbs',{
                 title: 'User Fail',
             })
@@ -438,6 +448,7 @@ app.get(`/profile/:name`, (request, response) => {
 
 });
 
+//END USER WELCOME PAGE AND PROFILE
 
 app.get('/logout', function (req, res, next) {
     if (req.session) {
@@ -470,14 +481,6 @@ app.get('/verify', (request, response) => {
 
 
 app.get('*', (request, response) => {
-    response.render('404.hbs', {
-        title: '404 Error',
-        head: 'Oops! 404',
-        error: 'Page Not Found'
-    })
-});
-
-app.get('/profile/*', (request, response) => {
     response.render('404.hbs', {
         title: '404 Error',
         head: 'Oops! 404',
