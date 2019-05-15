@@ -69,6 +69,8 @@ var hard_correct = 0;
 var normal_correct = 0;
 
 
+
+
 //EASY LEVEL MATH QUESTION
 
 
@@ -80,7 +82,7 @@ app.post('/gameplay',(req, res) =>{
         question = "What is " + a + " " + op + " " + b + "?";
         question_result = eval(a + op + b);
         // n += 1;
-        // console.log(n);
+        console.log("Question",n);
 
         res.render('game.hbs',{
             calculation: question
@@ -105,11 +107,11 @@ app.post('/math_answer/:name',(req, res) =>{
             var a = result.a, b = result.b, op = result.op;
             var question_new = "What is " + a + " " + op + " " + b + "?";
             n += 1;
-            console.log("Right",n);
+            console.log("N =",n);
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
             normal_correct +=1;
-            console.log(normal_correct);
+            console.log("Normal_correct",normal_correct);
 
             res.render('game',{
                 result: "CORRECT",
@@ -123,7 +125,11 @@ app.post('/math_answer/:name',(req, res) =>{
             var a = result.a, b = result.b, op = result.op;
             var question = "What is " + a + " " + op + " " + b + "?";
             n += 1;
-            console.log(n);
+
+            console.log("Wrong",n);
+
+            // incorrect +=1;
+            // console.log("Incorrect",incorrect);
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
 
@@ -136,16 +142,33 @@ app.post('/math_answer/:name',(req, res) =>{
         })
     }
 
-    var time = 0;
-    if (n%5 === 0 && n > 1) {
+    /*var time = 0;
+    if (n%6 === 0 && n > 1) {
         time += 1;
         res.redirect(`/normal_game_end/${user_name}`);
-        console.log(user_name);
-        console.log(normal_correct);
         if (n > 5) {
-        normal_correct = normal_correct - time*5;}
-
+        // console.log("-----Normal correct =", normal_correct);
+        // console.log("Time", time)
+        // console.log("Total Incorrect", incorrect);
+        // incorrect
+        normal_correct = normal_correct - time*5;
+        normal_correct = 1;
+        n = 0;
+        // console.log("-----Normal correct second",normal_correct)}
+        }
+    }*/
+    //var time = 0;
+    if (n%5 === 0 && n > 1) {
+        //time += 1;
+        res.redirect(`/normal_game_end/${user_name}`);
+        console.log(normal_correct);
     }
+});
+
+app.post('/normal_game_end',(req, res) =>{
+
+    res.redirect(`/mathgame/${user_name}`);
+    normal_correct = 0
 
 });
 
@@ -224,21 +247,24 @@ app.post('/math2_answer/:name',(req, res) =>{
         })
     }
 
-    var time = 0;
     if (t%5 === 0 && t > 1) {
-        time += 1;
         res.redirect(`/hard_game_end/${user_name}`);
-        console.log(hard_correct);
-        if (t > 5) {
-            hard_correct = hard_correct - time*5;}
 
     }
+});
+
+app.post('/hard_game_end',(req, res) =>{
+
+    res.redirect(`/mathgame2/${user_name}`);
+    hard_correct = 0
+
 });
 
 //END OF ALL GAME CODE
 
 //NORMAL GAME GET ENDPOINT
 app.get('/mathgame/:name', (request, response) => {
+
 
     user_name = request.params.name;
 
