@@ -45,14 +45,18 @@
             <form method="POST" action="/register">
                 <h1 class="h3 mb-3 font-weight-normal" style="font-family: Cambria,serif">Please Register</h1>
                 <div class="form-group">
-                    <label class="col-md-4">
+                    <label class="col-md-2">
                         <input type="text" id="inputFname" class="form-control" name="name" placeholder="First Name" required>
+                    </label>
+
+                    <label class="col-md-2">
+                        <input type="text" id="inputLname" class="form-control" name="lname" placeholder="Last Name" required>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-4">
-                        <input type="text" id="inputLname" class="form-control" name="lname" placeholder="Last Name" required>
+                        <input type="email" id="inputEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="email" placeholder="Email (test@example.com)" required>
                     </label>
                 </div>
 

@@ -7,10 +7,8 @@ const hbs = require('hbs');
 const utils = require('./utils');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
-const passport = require('passport');
 const flash = require('connect-flash');
 const request = require('request');
-
 
 var app = express();
 
@@ -38,17 +36,13 @@ app.use(
 
 app.use(expressValidator());
 
-
 app.get('/', (request, response) => {
     //console.log(request.session);
     response.render('home.hbs', {
         title: 'Home Page',
         head: 'Can You Math?'
-
-
     });
 });
-
 
 const getMath = async () => {
     try {
@@ -61,21 +55,117 @@ const getMath = async () => {
         console.log('Error');
     }
 };
+const getMath2 = async () => {
+    try {
+        var a = Math.floor(Math.random() * 20) + 2;
+        var b = Math.floor(Math.random() * 20) + 2;
+
+        var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
+
+        return {'a':a, 'b':b, 'op':op}
+    } catch (error) {
+        console.log('Error');
+    }
+};
+
+const getMath3 = async () => {
+    try {
+        var a = Math.floor(Math.random() * 5) + 2;
+        var b = Math.floor(Math.random() * 5) + 2;
+
+        var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
+
+        return {'a':a, 'b':b, 'op':op}
+    } catch (error) {
+        console.log('Error');
+    }
+};
+
 var user_name;
 var question, question_result;
+var question2, question_result2;
+var question3, question_result3;
 var n = 1;
 var t = 1;
+var e = 1;
 var hard_correct = 0;
 var normal_correct = 0;
+var easy_correct = 0;
+
+//EASY LEVEL MATH QUESTIONS
+app.post('/easy_gameplay',(req, res) =>{
+
+    getMath3().then((result) => {
+        var a = result.a, b = result.b, op = result.op;
+        question3 = "What is " + a + " " + op + " " + b + "?";
+        question_result3 = eval(a + op + b);
+
+        res.render('easy_game.hbs',{
+            calculation: question3
+        });
+    }).catch((error) => {
+        res.render('easy_game.hbs', {
+            calculation: `Error message: ${error}`
+        });
+    });
+
+});
 
 
+app.post('/math_easy_answer/:name',(req, res) =>{
+    var answer = parseInt(req.body.answer);
 
+    //user_name = request.params.name;
 
-//EASY LEVEL MATH QUESTION
+    if (answer === question_result3){
 
+        getMath3().then((result) => {
+            var a = result.a, b = result.b, op = result.op;
+            var question_new = "What is " + a + " " + op + " " + b + "?";
+            e += 1;
+            question_result_new = eval(a + op + b);
+            question_result3 = question_result_new;
+            easy_correct +=1;
 
+            res.render('easy_game',{
+                result: "CORRECT",
+                username: user_name,
+                calculation: question_new
+            })
+        })
+    }else {
+        getMath3().then((result) => {
+            var a = result.a, b = result.b, op = result.op;
+            var question = "What is " + a + " " + op + " " + b + "?";
+            e += 1;
+
+            question_result_new = eval(a + op + b);
+            question_result3 = question_result_new;
+
+            res.render('easy_game', {
+                result2: "WRONG",
+                username: user_name,
+                nextquestion: question,
+                //correct_answer: `The correct answer is ${correct_answer}`
+            })
+        })
+    }
+    if (e%5 === 0 && e > 1) {
+        //time += 1;
+        res.redirect(`/easy_game_end/${user_name}`);
+
+    }
+});
+
+app.post('/easy_game_end',(req, res) =>{
+
+    res.redirect(`/easy_mathgame/${user_name}`);
+    easy_correct = 0
+});
+//END EASY LEVEL MATH QUESTIONS
+
+//NORMAL LEVEL MATH QUESTIONS
 app.post('/gameplay',(req, res) =>{
-
 
     getMath().then((result) => {
         var a = result.a, b = result.b, op = result.op;
@@ -92,11 +182,10 @@ app.post('/gameplay',(req, res) =>{
             calculation: `Error message: ${error}`
         });
     });
-
 });
 
-
 app.post('/math_answer/:name',(req, res) =>{
+
     var answer = parseInt(req.body.answer);
 
     //user_name = request.params.name;
@@ -120,16 +209,10 @@ app.post('/math_answer/:name',(req, res) =>{
             })
         })
     }else {
-
         getMath().then((result) => {
             var a = result.a, b = result.b, op = result.op;
             var question = "What is " + a + " " + op + " " + b + "?";
             n += 1;
-
-            console.log("Wrong",n);
-
-            // incorrect +=1;
-            // console.log("Incorrect",incorrect);
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
 
@@ -141,27 +224,21 @@ app.post('/math_answer/:name',(req, res) =>{
             })
         })
     }
-
-    /*var time = 0;
-    if (n%6 === 0 && n > 1) {
-        time += 1;
-        res.redirect(`/normal_game_end/${user_name}`);
-        if (n > 5) {
-        // console.log("-----Normal correct =", normal_correct);
-        // console.log("Time", time)
-        // console.log("Total Incorrect", incorrect);
-        // incorrect
-        normal_correct = normal_correct - time*5;
-        normal_correct = 1;
-        n = 0;
-        // console.log("-----Normal correct second",normal_correct)}
-        }
-    }*/
-    //var time = 0;
     if (n%5 === 0 && n > 1) {
-        //time += 1;
         res.redirect(`/normal_game_end/${user_name}`);
-        console.log(normal_correct);
+        var db = utils.getDb();
+
+        /*db.collection('registration').findOne({username: user_name}, function(err, user) {
+            if (err){
+                response.send('Unable to find');
+            }else{
+                db.collection('registration').insertOne({
+                    easy_score: score,
+
+
+                })
+            }
+        });*/
     }
 });
 
@@ -169,26 +246,10 @@ app.post('/normal_game_end',(req, res) =>{
 
     res.redirect(`/mathgame/${user_name}`);
     normal_correct = 0
-
 });
+//END NORMAL DIFFICULTY LEVEL MATH QUESTIONS
 
-//DIFFICULT LEVEL MATH QUESTIONS
-
-const getMath2 = async () => {
-    try {
-        var a = Math.floor(Math.random() * 20) + 2;
-        var b = Math.floor(Math.random() * 20) + 2;
-
-        var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
-
-        return {'a':a, 'b':b, 'op':op}
-    } catch (error) {
-        console.log('Error');
-    }
-};
-
-var question2, question_result2;
-
+//HARD DIFFICULT LEVEL MATH QUESTIONS
 app.post('/gameplay2',(req, res) =>{
 
     getMath2().then((result) => {
@@ -204,7 +265,6 @@ app.post('/gameplay2',(req, res) =>{
             calculation: `Error message: ${error}`
         });
     });
-
 });
 
 app.post('/math2_answer/:name',(req, res) =>{
@@ -228,14 +288,12 @@ app.post('/math2_answer/:name',(req, res) =>{
             })
         })
     }else {
-
         getMath2().then((result) => {
             var a = result.a, b = result.b, op = result.op;
             var question = "What is " + a + " " + op + " " + b + "?";
             t += 1;
             question_result_new = eval(a + op + b);
             question_result2 = question_result_new;
-
 
             res.render('game2', {
                 result2: "WRONG",
@@ -246,10 +304,8 @@ app.post('/math2_answer/:name',(req, res) =>{
             })
         })
     }
-
     if (t%5 === 0 && t > 1) {
         res.redirect(`/hard_game_end/${user_name}`);
-
     }
 });
 
@@ -257,14 +313,45 @@ app.post('/hard_game_end',(req, res) =>{
 
     res.redirect(`/mathgame2/${user_name}`);
     hard_correct = 0
+});
+//END HARD DIFFICULT LEVEL MATH QUESTIONS
+
+//EASY GAME GET ENDPOINT
+app.get('/easy_mathgame/:name', (request, response) => {
+
+    user_name = request.params.name;
+
+    getMath3().then((result) => {
+        var a = result.a, b = result.b, op = result.op;
+        question3 = "What is " + a + " " + op + " " + b + "?";
+        question_result3 = eval(a + op + b);
+
+        response.render('easy_game.hbs',{
+            calculation: question3,
+            title: 'Math Game',
+            username: user_name,
+            head: 'Welcome To The Game Center',
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
 
 });
 
-//END OF ALL GAME CODE
+app.get(`/easy_game_end/:name`, (request, response) => {
+
+    user_name = request.params.name;
+
+    response.render('easy_game_end.hbs', {
+        title: 'GameEnd Page',
+        username: user_name,
+        total: `You Got ${easy_correct}/5`
+    });
+});
+//END EASY GAME GET ENDPOINT
 
 //NORMAL GAME GET ENDPOINT
 app.get('/mathgame/:name', (request, response) => {
-
 
     user_name = request.params.name;
 
@@ -284,7 +371,6 @@ app.get('/mathgame/:name', (request, response) => {
     }).catch((error) => {
         console.log(error)
     });
-
 });
 
 app.get(`/normal_game_end/:name`, (request, response) => {
@@ -295,17 +381,14 @@ app.get(`/normal_game_end/:name`, (request, response) => {
         title: 'GameEnd Page',
         username: user_name,
         total: `You Got ${normal_correct}/5`
-
-
     });
 });
 //END OF NORMAL GAME GET ENDPOINT
 
-//HARD GAME  GET ENDPOINT
+//HARD GAME GET ENDPOINT
 app.get('/mathgame2/:name', (request, response) => {
 
     user_name = request.params.name;
-
 
     getMath2().then((result) => {
         var a = result.a, b = result.b, op = result.op;
@@ -316,28 +399,22 @@ app.get('/mathgame2/:name', (request, response) => {
             calculation: question2,
             username: user_name,
             title: 'Math Game',
-
         });
     }).catch((error) => {
         console.log(error)
     });
-
 });
 
 app.get('/hard_game_end/:name', (request, response) => {
-    //console.log(request.session);
     user_name = request.params.name;
 
     response.render('hard_game_end.hbs', {
         title: 'GameEnd Page',
         username: user_name,
         total: `You Got ${hard_correct}/10`
-
-
     });
 });
 //END OF HARD GAME GET ENDPOINT
-
 
 app.get('/created', (request, response) => {
     response.render('created.hbs', {
@@ -347,12 +424,13 @@ app.get('/created', (request, response) => {
 });
 
 app.post('/register', function(req, res) {
+
     var fname = req.body.fname;
     var lname = req.body.lname;
+    var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
     var password2 = req.body.password2;
-
 
     if (password.length < 8){
         res.render('add.hbs', {
@@ -374,6 +452,7 @@ app.post('/register', function(req, res) {
                 db. collection('registration').insertOne({
                     fname: fname,
                     lname: lname,
+                    email: email,
                     username: username,
                     password: password2,
                     password2: password2,
@@ -391,7 +470,6 @@ app.post('/register', function(req, res) {
                 res.render('add.hbs', {
                     text: "Username already exists"
                 });
-
             }
         })
     }
@@ -467,13 +545,13 @@ app.get(`/profile/:name`, (request, response) => {
             title: 'User Profile',
             username: docs[0].username,
             first_name: docs[0].fname,
-            last_name: docs[0].lname
+            last_name: docs[0].lname,
+            email: docs[0].email
         })
 
     })
 
 });
-
 //END USER WELCOME PAGE AND PROFILE
 
 app.get('/logout', function (req, res, next) {
@@ -489,22 +567,17 @@ app.get('/logout', function (req, res, next) {
     }
 });
 
-
-
 app.get('/register', (request, response) => {
     response.render('add.hbs', {
         title: 'Register',
-
     })
 });
 
 app.get('/verify', (request, response) => {
     response.render('login.hbs', {
         title: 'Login',
-
     })
 });
-
 
 app.get('*', (request, response) => {
     response.render('404.hbs', {
