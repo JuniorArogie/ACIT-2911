@@ -224,21 +224,22 @@ app.post('/math_answer/:name',(req, res) =>{
             })
         })
     }
+    var db = utils.getDb();
+    const alreadyExisting = db.collection("registration").findOne({username: user_name });
+
     if (n%5 === 0 && n > 1) {
         res.redirect(`/normal_game_end/${user_name}`);
         var db = utils.getDb();
 
-        /*db.collection('registration').findOne({username: user_name}, function(err, user) {
-            if (err){
-                response.send('Unable to find');
-            }else{
-                db.collection('registration').insertOne({
-                    easy_score: score,
-
-
-                })
-            }
-        });*/
+        if (alreadyExisting){
+            db.collection('registration').findOne({username: user_name}, function(err, user) {
+                if (normal_correct > user[0].normal_score) {
+                    db.collection('registration').updateOne({username: user_name}, {
+                        $set: {normal_score: normal_correct}
+                    })
+                }
+            })
+        }
     }
 });
 
@@ -248,6 +249,7 @@ app.post('/normal_game_end',(req, res) =>{
     normal_correct = 0
 });
 //END NORMAL DIFFICULTY LEVEL MATH QUESTIONS
+
 
 //HARD DIFFICULT LEVEL MATH QUESTIONS
 app.post('/gameplay2',(req, res) =>{
@@ -456,6 +458,9 @@ app.post('/register', function(req, res) {
                     username: username,
                     password: password2,
                     password2: password2,
+                    easy_score: '',
+                    normal_score: '',
+                    hard_score: '',
 
                 }, (err) => {
                     if (err){
