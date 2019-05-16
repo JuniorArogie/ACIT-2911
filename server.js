@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const request = require('request');
+var exphbs = require('express-handlebars');
 
 var app = express();
 
@@ -535,7 +536,8 @@ app.post('/verify', function(req, res) {
                 // res.render('welcome.hbs', {
                 //     username: username
                 // });
-                res.redirect(`/welcome/${username}`)
+                // res.redirect(`/welcome/${username}`)
+                res.redirect(`/phone/${username}`);
             }else {
                 res.render('login.hbs', {
                     text: "The username or password you entered is incorrect"
@@ -544,6 +546,77 @@ app.post('/verify', function(req, res) {
         });
     }
 });
+
+//2 STEP AUTHENTICATION
+
+//Load and initialize MessageBird SDK
+var messagebird = require('messagebird')('h5kgtCqXjpujk06vSmtWopwEK'); //Input message bird key here
+
+//Set up and configure the Express framework
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
+
+//Display page to ask the user their phone number
+app.get('/phone/:name', function(req, res) {
+    var user_name = req.params.name;
+
+    res.render(`step1`, {
+        username: user_name
+    });
+});
+
+//Handle phone number submission
+app.post('/step2/:name', function(req, res) {
+    var number = req.body.number;
+    var user_name = req.params.name;
+
+    //Make request to verify API
+    messagebird.verify.create(number, {
+        template: "Your verification code is %token."
+    },function (err, response) {
+        if(err) {
+            //Request has failed
+            console.log(err);
+            res.render(`step1`,{
+                error: err.errors[0].description,
+                username: user_name
+            });
+        }
+        else{
+            //Request succeeds
+            console.log(response);
+            res.render(`step2`,{
+                id: response.id,
+                username: user_name
+            });
+        }
+    })
+});
+
+//Verify whether the token is correct
+
+app.post('/step3/:name', function(req, res) {
+    var id = req.body.id;
+    var token = req.body.token;
+    var user_name = req.params.name;
+
+    //Make request to verify API
+    messagebird.verify.verify(id, token, function(err, response ) {
+        if(err){
+            //Verification has failed
+            res.render('step2', {
+                error: err.errors[0].description,
+                id: id
+            })
+        } else {
+            //Verification was succe${username}
+            res.redirect(`/welcome/${user_name}`)
+        }
+    })
+});
+
+//END 2 step auth
 
 
 
@@ -596,44 +669,47 @@ app.get(`/profile/:name`, (request, response) => {
 //************START LEADERBOARD CODE******************
 app.get(`/easy_leaderboard/:name`, (request, response) => {
 
+    var user_name = request.params.name;
+
     var db = utils.getDb();
     db.collection('registration').find({}).toArray((err,docs) => {
-    if (err) {
-        return console.log("Unable to get all user");
-    }
+        if (err) {
+            return console.log("Unable to get all user");
+        }
 
-    console.log(docs);
+        console.log(docs);
 
-    var i;
-    var array = [];
-    for (i = 0; i < docs.length; i++) {
-        var object = [];
+        var i;
+        var array = [];
+        for (i = 0; i < docs.length; i++) {
+            var object = [];
 
-        object.push(docs[i].username);
-        object.push(docs[i].easy_score);
-        array.push(object);
-    }
+            object.push(docs[i].username);
+            object.push(docs[i].easy_score);
+            array.push(object);
+        }
 
-    array.sort(function(a, b)
-    {
-        return a[1] - b[1];
+        array.sort(function(a, b)
+        {
+            return a[1] - b[1];
         });
 
-    console.log(array);
+        console.log(array);
 
-    var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-    var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-    var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-    var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-    var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
 
 
-    response.render('easy_leaderboard.hbs',{
-        first: first,
-        second: second,
-        third: third,
-        fourth: fourth,
-        fifth: fifth
+        response.render('easy_leaderboard.hbs',{
+            first: first,
+            second: second,
+            third: third,
+            fourth: fourth,
+            fifth: fifth,
+            username: user_name
 
         })
     })
@@ -642,6 +718,8 @@ app.get(`/easy_leaderboard/:name`, (request, response) => {
 
 app.get(`/normal_leaderboard/:name`, (request, response) => {
 
+    var user_name = request.params.name;
+
     var db = utils.getDb();
     db.collection('registration').find({}).toArray((err,docs) => {
         if (err) {
@@ -650,43 +728,45 @@ app.get(`/normal_leaderboard/:name`, (request, response) => {
 
         console.log(docs);
 
-    var i;
-    var array = [];
-    for (i = 0; i < docs.length; i++) {
-        var object = [];
+        var i;
+        var array = [];
+        for (i = 0; i < docs.length; i++) {
+            var object = [];
 
-        object.push(docs[i].username);
-        object.push(docs[i].normal_score);
-        array.push(object);
-    }
+            object.push(docs[i].username);
+            object.push(docs[i].normal_score);
+            array.push(object);
+        }
 
-    array.sort(function(a, b)
-    {
-        return a[1] - b[1];
-    });
+        array.sort(function(a, b)
+        {
+            return a[1] - b[1];
+        });
 
-    console.log(array);
+        console.log(array);
 
-    var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-    var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-    var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-    var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-    var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
 
 
-    response.render('normal_leaderboard.hbs',{
-        first: first,
-        second: second,
-        third: third,
-        fourth: fourth,
-        fifth: fifth
+        response.render('normal_leaderboard.hbs',{
+            first: first,
+            second: second,
+            third: third,
+            fourth: fourth,
+            fifth: fifth
 
-    })
+        })
     })
 });
 
 app.get(`/hard_leaderboard/:name`, (request, response) => {
 
+    var user_name = request.params.name;
+
     var db = utils.getDb();
     db.collection('registration').find({}).toArray((err,docs) => {
         if (err) {
@@ -695,36 +775,36 @@ app.get(`/hard_leaderboard/:name`, (request, response) => {
 
         console.log(docs);
 
-    var i;
-    var array = [];
-    for (i = 0; i < docs.length; i++) {
-        var object = [];
+        var i;
+        var array = [];
+        for (i = 0; i < docs.length; i++) {
+            var object = [];
 
-        object.push(docs[i].username);
-        object.push(docs[i].hard_score);
-        array.push(object);
+            object.push(docs[i].username);
+            object.push(docs[i].hard_score);
+            array.push(object);
         }
 
-    array.sort(function(a, b)
+        array.sort(function(a, b)
         {
-        return a[1] - b[1];
+            return a[1] - b[1];
         });
 
-    console.log(array);
+        console.log(array);
 
-    var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-    var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-    var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-    var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-    var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
 
 
-    response.render('hard_leaderboard.hbs',{
-        first: first,
-        second: second,
-        third: third,
-        fourth: fourth,
-        fifth: fifth
+        response.render('hard_leaderboard.hbs',{
+            first: first,
+            second: second,
+            third: third,
+            fourth: fourth,
+            fifth: fifth
 
         })
     })
