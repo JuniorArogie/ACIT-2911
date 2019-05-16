@@ -160,7 +160,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log(user.easy_score)
+                console.log(user.easy_score);
                 if (easy_correct > user.easy_score) {
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {easy_score: easy_correct}
@@ -591,6 +591,81 @@ app.get(`/profile/:name`, (request, response) => {
     })
 
 });
+
+//LEADERBOARD
+
+app.get('/leaderboard', (request, response) => {
+
+    // var user_name = request.params.name;
+    //
+    // if(user_name === undefined) {
+    //     response.render('404.hbs', {
+    //         title: 'User Fail',
+    //     });
+    // }
+
+    var db = utils.getDb();
+    db.collection('registration').find({}).toArray((err,docs) => {
+        if (err) {
+            return console.log("Unable to get all user");
+        }
+        // else if(user_name === undefined){
+        //     response.render('user_fail.hbs',{
+        //         title: 'User Fail',
+        //     })
+        // }
+
+        // response.render('user.hbs', {
+        //     title: 'User Profile',
+        //     username: docs[0].username,
+        //     first_name: docs[0].fname,
+        //     last_name: docs[0].lname,
+        //     email: docs[0].email,
+        //     easy_score: docs[0].easy_score,
+        //     normal_score: docs[0].normal_score,
+        //     hard_score: docs[0].hard_score
+        // })
+
+        console.log(docs);
+
+        var i;
+        var array = [];
+        for (i = 0; i < docs.length; i++) {
+            var object = [];
+
+            object.push(docs[i].username);
+            object.push(docs[i].normal_score);
+            array.push(object);
+        }
+
+        array.sort(function(a, b)
+        {
+            return a[1] - b[1];
+        });
+
+        console.log(array);
+
+        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+        // var four = array[array.length - 4][0] + 'scores'+ array[array.length - 4][1];
+        // var five = array[array.length - 5][0] + 'scores'+ array[array.length - 5][1];
+
+
+        response.render('leaderboard.hbs',{
+            first: first,
+            second: second,
+            third: third
+            // four: four,
+            // five: five
+
+        })
+
+
+    })
+
+});
+
 //END USER WELCOME PAGE AND PROFILE
 
 app.get('/logout', function (req, res, next) {
