@@ -30,9 +30,13 @@
                         <a class="dropdown-item" href="/">Sign Out</a>
                     </div>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Leaderboard</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Leaderboard</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/">Easy</a>
+                        <a class="dropdown-item" href="/">Normal</a>
+                        <a class="dropdown-item" href="/">Hard</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/welcome/{{username}}">Home</a>
@@ -42,39 +46,30 @@
     </div>
 </nav>
 
-<!--<div align="center" style="padding: 20px; color: darkred; font-size: 50px; font-family: Cambria,serif">
-    <p>{{head}}</p>
 
-    <p>Username: {{username}}</p>
-    <p>Name: {{first_name}} {{last_name}}</p>
-    <p>Email: {{email}}</p>
-
-</div>-->
-
-<div class="card">
+<div class="card w-50 h-50 mb-3" style="float: none; margin: 50px auto 0;">
     <div class="card-header">
-        {{last_name}},{{first_name}}
+        {{last_name}}, {{first_name}}
     </div>
-    <div class="table-responsive">
-        <tr>
-            <td class="col-md-2">
-                <div class="card-body col-md-2">
-                    <p class="card-text"> User Name: {{username}}</p>
-                    <p class="card-text"> Email: {{email}}</p>
 
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-md-2">
-                <div class="card-body col-md-2">
-                <p class="card-text"> Easy Level Score: {{easy_score}}</p>
-                <p class="card-text"> Normal Level Score: {{normal_score}}</p>
-                <p class="card-text"> Hard Level Score: {{hard_score}}</p>
-
-            </div>
-            </td>
-        </tr>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table>
+                <tr>
+                    <td>
+                        <img src="../batman.jpg" style="width: 200px; height: 200px">
+                    </td>
+                    <td>
+                        <p class="card-text">
+                            User Name: {{username}}<br>
+                            Email: {{email}}<br>
+                            Easy Level Score: {{easy_score}}<br>
+                            Normal Level Score: {{normal_score}}<br>
+                            Hard Level Score: {{hard_score}}</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 
