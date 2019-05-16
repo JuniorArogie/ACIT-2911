@@ -160,7 +160,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log(user.easy_score);
+                console.log(user.easy_score)
                 if (easy_correct > user.easy_score) {
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {easy_score: easy_correct}
@@ -242,7 +242,7 @@ app.post('/math_answer/:name',(req, res) =>{
     var db = utils.getDb();
     const alreadyExisting = db.collection("registration").findOne({username: user_name });
 
-    if (n%5 === 0 && n > 1) {
+    if (n%10 === 0 && n > 1) {
         res.redirect(`/normal_game_end/${user_name}`);
         var db = utils.getDb();
 
@@ -324,7 +324,7 @@ app.post('/math2_answer/:name',(req, res) =>{
     }
     var db = utils.getDb();
     const alreadyExisting = db.collection("registration").findOne({username: user_name });
-    if (t%5 === 0 && t > 1) {
+    if (t%15 === 0 && t > 1) {
 
         res.redirect(`/hard_game_end/${user_name}`);
         var db = utils.getDb();
@@ -413,7 +413,7 @@ app.get(`/normal_game_end/:name`, (request, response) => {
     response.render('normal_game_end.hbs', {
         title: 'GameEnd Page',
         username: user_name,
-        total: `You Got ${normal_correct}/5`
+        total: `You Got ${normal_correct}/10`
     });
 });
 //END OF NORMAL GAME GET ENDPOINT
@@ -444,7 +444,7 @@ app.get('/hard_game_end/:name', (request, response) => {
     response.render('hard_game_end.hbs', {
         title: 'GameEnd Page',
         username: user_name,
-        total: `You Got ${hard_correct}/10`
+        total: `You Got ${hard_correct}/15`
     });
 });
 //END OF HARD GAME GET ENDPOINT
@@ -591,169 +591,152 @@ app.get(`/profile/:name`, (request, response) => {
     })
 
 });
-
-//LEADERBOARD_NORMAL
-
-app.get('/leaderboard', (request, response) => {
-
-    // var user_name = request.params.name;
-    //
-    // if(user_name === undefined) {
-    //     response.render('404.hbs', {
-    //         title: 'User Fail',
-    //     });
-    // }
-
-    var db = utils.getDb();
-    db.collection('registration').find({}).toArray((err,docs) => {
-        if (err) {
-            return console.log("Unable to get all user");
-        }
-
-        console.log(docs);
-
-        var i;
-        var array = [];
-        for (i = 0; i < docs.length; i++) {
-            var object = [];
-
-            object.push(docs[i].username);
-            object.push(docs[i].normal_score);
-            array.push(object);
-        }
-
-        array.sort(function(a, b)
-        {
-            return a[1] - b[1];
-        });
-
-        console.log(array);
-
-        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
-
-
-        response.render('leaderboard.hbs',{
-            first: first,
-            second: second,
-            third: third,
-            fourth: fourth,
-            fifth: fifth
-
-        })
-    })
-});
-
-//LEADERBOARD_EASY
-
-app.get('/leaderboard_easy', (request, response) => {
-
-    var db = utils.getDb();
-    db.collection('registration').find({}).toArray((err,docs) => {
-        if (err) {
-            return console.log("Unable to get all user");
-        }
-
-        console.log(docs);
-
-        var i;
-        var array = [];
-        for (i = 0; i < docs.length; i++) {
-            var object = [];
-
-            object.push(docs[i].username);
-            object.push(docs[i].easy_score);
-            array.push(object);
-        }
-
-        array.sort(function(a, b)
-        {
-            return a[1] - b[1];
-        });
-
-        console.log(array);
-
-        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
-
-
-        response.render('leaderboard.hbs',{
-            first: first,
-            second: second,
-            third: third,
-            fourth: fourth,
-            fifth: fifth
-
-        })
-    })
-});
-
-//LEADERBOARD_HARD
-
-app.get('/leaderboard_hard', (request, response) => {
-
-    var db = utils.getDb();
-    db.collection('registration').find({}).toArray((err,docs) => {
-        if (err) {
-            return console.log("Unable to get all user");
-        }
-
-        console.log(docs);
-
-        var i;
-        var array = [];
-        for (i = 0; i < docs.length; i++) {
-            var object = [];
-
-            object.push(docs[i].username);
-            object.push(docs[i].hard_score);
-            array.push(object);
-        }
-
-        array.sort(function(a, b)
-        {
-            return a[1] - b[1];
-        });
-
-        console.log(array);
-
-        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
-
-
-        response.render('leaderboard.hbs',{
-            first: first,
-            second: second,
-            third: third,
-            fourth: fourth,
-            fifth: fifth
-
-        })
-    })
-});
-
 //END USER WELCOME PAGE AND PROFILE
 
-app.get('/logout', function (req, res, next) {
-    if (req.session) {
-        // delete session object
-        req.session.destroy(function (err) {
-            if (err) {
-                return next(err);
-            } else {
-                return res.redirect('/');
-            }
-        });
+//************START LEADERBOARD CODE******************
+app.get(`/easy_leaderboard/:name`, (request, response) => {
+
+    var db = utils.getDb();
+    db.collection('registration').find({}).toArray((err,docs) => {
+    if (err) {
+        return console.log("Unable to get all user");
     }
+
+    console.log(docs);
+
+    var i;
+    var array = [];
+    for (i = 0; i < docs.length; i++) {
+        var object = [];
+
+        object.push(docs[i].username);
+        object.push(docs[i].easy_score);
+        array.push(object);
+    }
+
+    array.sort(function(a, b)
+    {
+        return a[1] - b[1];
+        });
+
+    console.log(array);
+
+    var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+    var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+    var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+    var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+    var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+
+
+    response.render('easy_leaderboard.hbs',{
+        first: first,
+        second: second,
+        third: third,
+        fourth: fourth,
+        fifth: fifth
+
+        })
+    })
+});
+
+
+app.get(`/normal_leaderboard/:name`, (request, response) => {
+
+    var db = utils.getDb();
+    db.collection('registration').find({}).toArray((err,docs) => {
+        if (err) {
+            return console.log("Unable to get all user");
+        }
+
+        console.log(docs);
+
+    var i;
+    var array = [];
+    for (i = 0; i < docs.length; i++) {
+        var object = [];
+
+        object.push(docs[i].username);
+        object.push(docs[i].normal_score);
+        array.push(object);
+    }
+
+    array.sort(function(a, b)
+    {
+        return a[1] - b[1];
+    });
+
+    console.log(array);
+
+    var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+    var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+    var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+    var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+    var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+
+
+    response.render('normal_leaderboard.hbs',{
+        first: first,
+        second: second,
+        third: third,
+        fourth: fourth,
+        fifth: fifth
+
+    })
+    })
+});
+
+app.get(`/hard_leaderboard/:name`, (request, response) => {
+
+    var db = utils.getDb();
+    db.collection('registration').find({}).toArray((err,docs) => {
+        if (err) {
+            return console.log("Unable to get all user");
+        }
+
+        console.log(docs);
+
+    var i;
+    var array = [];
+    for (i = 0; i < docs.length; i++) {
+        var object = [];
+
+        object.push(docs[i].username);
+        object.push(docs[i].hard_score);
+        array.push(object);
+        }
+
+    array.sort(function(a, b)
+        {
+        return a[1] - b[1];
+        });
+
+    console.log(array);
+
+    var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+    var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+    var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+    var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+    var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+
+
+    response.render('hard_leaderboard.hbs',{
+        first: first,
+        second: second,
+        third: third,
+        fourth: fourth,
+        fifth: fifth
+
+        })
+    })
+
+
+});
+
+//************END LEADERBOARD CODE******************
+
+app.post('/logout', function (req, res, next) {
+    user_name = ""
+    res.redirect('/')
 });
 
 app.get('/register', (request, response) => {
