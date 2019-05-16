@@ -150,9 +150,24 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             })
         })
     }
+    var db = utils.getDb();
+    const alreadyExisting = db.collection("registration").findOne({username: user_name });
+
     if (e%5 === 0 && e > 1) {
         //time += 1;
         res.redirect(`/easy_game_end/${user_name}`);
+        var db = utils.getDb();
+
+        if (alreadyExisting){
+            db.collection('registration').findOne({username: user_name}, function(err, user) {
+                console.log(user.easy_score)
+                if (easy_correct > user.easy_score) {
+                    db.collection('registration').updateOne({username: user_name}, {
+                        $set: {easy_score: easy_correct}
+                    })
+                }
+            })
+        }
 
     }
 });
@@ -233,7 +248,8 @@ app.post('/math_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                if (normal_correct > user[0].normal_score) {
+                console.log(user.normal_score)
+                if (normal_correct > user.normal_score) {
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {normal_score: normal_correct}
                     })
@@ -306,8 +322,23 @@ app.post('/math2_answer/:name',(req, res) =>{
             })
         })
     }
+    var db = utils.getDb();
+    const alreadyExisting = db.collection("registration").findOne({username: user_name });
     if (t%5 === 0 && t > 1) {
+
         res.redirect(`/hard_game_end/${user_name}`);
+        var db = utils.getDb();
+
+        if (alreadyExisting){
+            db.collection('registration').findOne({username: user_name}, function(err, user) {
+                console.log(user.hard_score)
+                if (hard_correct > user.hard_score) {
+                    db.collection('registration').updateOne({username: user_name}, {
+                        $set: {hard_score: hard_correct}
+                    })
+                }
+            })
+        }
     }
 });
 
@@ -551,7 +582,10 @@ app.get(`/profile/:name`, (request, response) => {
             username: docs[0].username,
             first_name: docs[0].fname,
             last_name: docs[0].lname,
-            email: docs[0].email
+            email: docs[0].email,
+            easy_score: docs[0].easy_score,
+            normal_score: docs[0].normal_score,
+            hard_score: docs[0].hard_score
         })
 
     })
