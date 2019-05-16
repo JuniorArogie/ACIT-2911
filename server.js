@@ -592,7 +592,7 @@ app.get(`/profile/:name`, (request, response) => {
 
 });
 
-//LEADERBOARD
+//LEADERBOARD_NORMAL
 
 app.get('/leaderboard', (request, response) => {
 
@@ -609,22 +609,6 @@ app.get('/leaderboard', (request, response) => {
         if (err) {
             return console.log("Unable to get all user");
         }
-        // else if(user_name === undefined){
-        //     response.render('user_fail.hbs',{
-        //         title: 'User Fail',
-        //     })
-        // }
-
-        // response.render('user.hbs', {
-        //     title: 'User Profile',
-        //     username: docs[0].username,
-        //     first_name: docs[0].fname,
-        //     last_name: docs[0].lname,
-        //     email: docs[0].email,
-        //     easy_score: docs[0].easy_score,
-        //     normal_score: docs[0].normal_score,
-        //     hard_score: docs[0].hard_score
-        // })
 
         console.log(docs);
 
@@ -648,22 +632,113 @@ app.get('/leaderboard', (request, response) => {
         var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
         var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
         var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-        // var four = array[array.length - 4][0] + 'scores'+ array[array.length - 4][1];
-        // var five = array[array.length - 5][0] + 'scores'+ array[array.length - 5][1];
+        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
 
 
         response.render('leaderboard.hbs',{
             first: first,
             second: second,
-            third: third
-            // four: four,
-            // five: five
+            third: third,
+            fourth: fourth,
+            fifth: fifth
 
         })
-
-
     })
+});
 
+//LEADERBOARD_EASY
+
+app.get('/leaderboard_easy', (request, response) => {
+
+    var db = utils.getDb();
+    db.collection('registration').find({}).toArray((err,docs) => {
+        if (err) {
+            return console.log("Unable to get all user");
+        }
+
+        console.log(docs);
+
+        var i;
+        var array = [];
+        for (i = 0; i < docs.length; i++) {
+            var object = [];
+
+            object.push(docs[i].username);
+            object.push(docs[i].easy_score);
+            array.push(object);
+        }
+
+        array.sort(function(a, b)
+        {
+            return a[1] - b[1];
+        });
+
+        console.log(array);
+
+        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+
+
+        response.render('leaderboard.hbs',{
+            first: first,
+            second: second,
+            third: third,
+            fourth: fourth,
+            fifth: fifth
+
+        })
+    })
+});
+
+//LEADERBOARD_HARD
+
+app.get('/leaderboard_hard', (request, response) => {
+
+    var db = utils.getDb();
+    db.collection('registration').find({}).toArray((err,docs) => {
+        if (err) {
+            return console.log("Unable to get all user");
+        }
+
+        console.log(docs);
+
+        var i;
+        var array = [];
+        for (i = 0; i < docs.length; i++) {
+            var object = [];
+
+            object.push(docs[i].username);
+            object.push(docs[i].hard_score);
+            array.push(object);
+        }
+
+        array.sort(function(a, b)
+        {
+            return a[1] - b[1];
+        });
+
+        console.log(array);
+
+        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
+        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
+        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
+        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
+        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+
+
+        response.render('leaderboard.hbs',{
+            first: first,
+            second: second,
+            third: third,
+            fourth: fourth,
+            fifth: fifth
+
+        })
+    })
 });
 
 //END USER WELCOME PAGE AND PROFILE
