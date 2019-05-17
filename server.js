@@ -757,7 +757,8 @@ app.get(`/normal_leaderboard/:name`, (request, response) => {
             second: second,
             third: third,
             fourth: fourth,
-            fifth: fifth
+            fifth: fifth,
+            username: user_name
 
         })
     })
@@ -804,7 +805,8 @@ app.get(`/hard_leaderboard/:name`, (request, response) => {
             second: second,
             third: third,
             fourth: fourth,
-            fifth: fifth
+            fifth: fifth,
+            username: user_name
 
         })
     })
