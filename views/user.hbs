@@ -5,44 +5,108 @@
     <title>{{title}}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" type="text/css">
     <link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         .bgcolor{
-            background-color: #DDDDDD;
+            background: url("../profile_bg1.jpg") no-repeat;
+            background-size: 100% 700px;
         }
     </style>
 </head>
 <body class="bgcolor justify-content-lg-center">
-{{> game_nav}}
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar">
+        <img src="../logo.jpg" width="35" height="35" alt="">
+    </a>
+    <a class="navbar-brand" style="color: white">Welcome, {{username}}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/profile/{{username}}">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <form action="/logout" method="POST">
+                        <input type="submit" class="btn dropdown-item" value="Logout">
+                    </form>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Leaderboard</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/easy_leaderboard/{{username}}">Easy</a>
+                    <a class="dropdown-item" href="/normal_leaderboard/{{username}}">Normal</a>
+                    <a class="dropdown-item" href="/hard_leaderboard/{{username}}">Hard</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome/{{username}}">Game</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
 
 
-
-<div class="card w-50 h-50 mb-3" style="float: none; margin: 50px auto 0;">
+<div class="card text-white bg-dark mb-3 w-50 h-50 mb-3" style="float: none; margin: 50px auto 0;">
     <div class="card-header">
-        {{last_name}}, {{first_name}}
+        <span style="font-size: 20px; 'Comic Sans MS',serif;">{{last_name}}, {{first_name}}</span>
     </div>
 
     <div class="card-body">
-        <div class="table-responsive">
-            <table>
-                <tr>
-                    <td>
-                        <img src="../batman.jpg" style="width: 200px; height: 200px">
-                    </td>
-                    <td>
-                        <p class="card-text">
-                            User Name: {{username}}<br>
-                            Email: {{email}}<br>
-                            Easy Level Score: {{easy_score}}<br>
-                            Normal Level Score: {{normal_score}}<br>
-                            Hard Level Score: {{hard_score}}</p>
-                    </td>
-                </tr>
-            </table>
+        <div class="container">
+            <div class="row justify-content-around">
+                <div class="col-4">
+                    <img src="../batman.jpg" alt="Avatar" class="avatar" style="width: 100px; height: 100px;border-radius: 50%;">
+                </div>
+                <div class="col-8" >
+                    <p class="card-text" style="font-size: 20px; font-family:'Comic Sans MS',serif;">
+                        <strong>User Name:</strong> {{username}}<br>
+                        <strong>Email:</strong> {{email}}<br>
+                    </p>
+                    <hr  style="border: 1px solid black";
+                    >
+
+                </div>
+                <div class="col-4">
+                    <p class="card-text" style="font-family: 'Comic Sans MS',serif;; font-size: 15px">
+                        Easy Level Score: <strong>{{easy_score}}</strong><br>
+                        Normal Level Score: <strong>{{normal_score}}</strong><br>
+                        Hard Level Score: <strong>{{hard_score}}</strong>
+                    </p>
+                </div>
+            </div>
         </div>
+
+
     </div>
 </div>
 
+
+
+
+
+
+
+
+
+<!--<div class="table-responsive">
+    <table>
+        <tr>
+            <td>
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    </table>
+</div>-->
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

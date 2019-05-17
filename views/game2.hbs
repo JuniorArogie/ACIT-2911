@@ -20,27 +20,6 @@
 {{> game_nav}}
 
 
-<!--
-<div align="center">
-    <h1 style="font-family: Century Gothic, serif ">Welcome to HARD difficulty</h1>
-    <div class="form-group btn-group">
-        <form action="/gameplay2/{{username}}" method="POST">
-            <p>{{calculation}}</p>
-            <p>{{nextquestion}}</p>
-        </form>
-    </div>
-</div>
-<div align="center">
-    <div class="form-group btn-group">
-        <form action="/math2_answer/{{username}}" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer">
-            <p>{{result}}</p>
-            <input type="submit" class="btn btn-primary" value="Check">
-            <p>{{correct_answer}}</p>
-        </form>
-    </div>
-</div>-->
-
 <div style=" font-size: 50px; color: darkred; font-family: 'Comic Sans MS',serif;" align="center"> Hard Mode</div>
 
 <div class="card w-50 h-50 text-white text-center  mb-3" style="float: none; margin: 50px auto 0; border-radius: 40px; background-color: #CD853F;">
@@ -51,11 +30,11 @@
 
         </form>
         <form action="/math2_answer/{{username}}" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" placeholder="Input Answer" required><br><br>
-            <input type="submit" class="btn btn-primary" value="Check">
+            <label for="answer"></label><input style="border-radius: 10px; outline: none" type="number" step="any" id="answer" name="answer" placeholder="Input Answer" required><br><br>
+            <input type="submit" class="btn btn-info" value="Check">
         </form>
         <div>
-            <p style="color: darkgreen; font-size: 25px">{{result}}</p><p style="color: darkred; font-size: 25px">{{result2}}</p>
+            <p><span style="color: darkgreen; font-size: 25px">{{result}}</span><span style="color: darkred; font-size: 25px">{{result2}}</span></p>
         </div>
 
     </div>
@@ -69,4 +48,3 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </html>
-

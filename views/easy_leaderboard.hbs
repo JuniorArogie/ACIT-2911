@@ -8,18 +8,54 @@
 
     <style>
         .bgcolor{
-            background: url("") no-repeat center;
-            background-size: 100%;
+            background: url("../leaderboard.jpg") no-repeat center;
+            background-size: 100% 875px;
         }
     </style>
 </head>
 <body class="bgcolor justify-content-lg-center">
 
-{{> game_nav}}
 
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar" >
+        <img src="../logo.jpg" width="35" height="35" alt="">
+    </a>
+    <a class="navbar-brand" style="color: white">Welcome, {{username}}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/profile/{{username}}">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <form action="/logout" method="POST">
+                        <input type="submit" class="btn dropdown-item" value="Logout">
+                    </form>
+                </div>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Leaderboard</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/easy_leaderboard/{{username}}">Easy</a>
+                    <a class="dropdown-item" href="/normal_leaderboard/{{username}}">Normal</a>
+                    <a class="dropdown-item" href="/hard_leaderboard/{{username}}">Hard</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome/{{username}}">Game</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
 
 <div style="height: 50%; width: 50%; margin:0 auto; padding-top: 5%; border: 2px black" >
-    <p align="center" style="font-size: 35px"> Easy Difficulty Leaderboard</p>
+    <p align="center" style="font-size: 35px; font-family: 'Comic Sans MS',serif;"> Easy Difficulty Leaderboard</p>
 
     <table class="table" style="border: black">
         <thead class="thead-dark">
