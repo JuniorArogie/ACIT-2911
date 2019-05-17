@@ -8,7 +8,7 @@
 
     <style>
         .bgcolor{
-            background: url("../bg5.jpg") no-repeat center;
+            background: url("") no-repeat center;
             background-size: 100%;
         }
     </style>
@@ -18,36 +18,40 @@
 {{> game_nav}}
 
 
-<table class="table table-sm">
-    <thead>
-    <tr>
-        <th scope="col">Rank</th>
-        <th scope="col">Players</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>{{first}}</td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>{{second}}</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>{{third}}</td>
-    </tr>
-    <tr>
-        <th scope="row">4</th>
-        <td>{{fourth}}</td>
-    </tr>
-    <tr>
-        <th scope="row">5</th>
-        <td>{{fifth}}</td>
-    </tr>
-    </tbody>
-</table>
+<div style="height: 50%; width: 50%; margin:0 auto; padding-top: 5%; border: 2px black" >
+    <p align="center" style="font-size: 35px"> Easy Difficulty Leaderboard</p>
+
+    <table class="table" style="border: black">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Players</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>{{first}}</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>{{second}}</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>{{third}}</td>
+        </tr>
+        <tr>
+            <th scope="row">4</th>
+            <td>{{fourth}}</td>
+        </tr>
+        <tr>
+            <th scope="row">5</th>
+            <td>{{fifth}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 
 
