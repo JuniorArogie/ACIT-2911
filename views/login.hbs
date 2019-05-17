@@ -9,12 +9,14 @@
 
     <style>
         .bgcolor{
-            background-color: #DDDDDD;
+            background: url("../bg4.jpg") no-repeat;
+            background-size: 100% ;
         }
         .container{
             background-color: lightslategrey ;
-            border: 10px solid black;
-            padding: 10px;
+            border: 5px solid black;
+            border-radius: 10px;
+            padding: 20px;
             float: none;
             margin: 50px auto 0;
         }
@@ -46,7 +48,8 @@
         </ul>
     </div>
 </nav>
-<div class="container" >
+<div style="padding-top: 40px"></div>
+<div class="container">
     <div class="panel panel-primary">
         <div class="panel-body" align="center">
             <form method="POST" action="/verify">
@@ -62,7 +65,7 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button type="submit" class="btn btn-secondary">Sign In</button>
                 </div>
             </form>
             <p align="center" style="color: red">{{text}}</p>
