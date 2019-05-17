@@ -2,16 +2,81 @@
     <p>{{error}}</p>
 {{/if}}
 
-<p>We have sent you a verfication code!</p>
 
-<p>Please enter the code here:</p>
 
-<form method="post" action="/step3/{{username}}">
-    <input type="hidden" name="id" value="{{id}}" />
-    <label>
-        <input type="text" name="token" />
-    </label>
-    <input type="submit" value="Checkcode" />
 
-</form>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" type="text/css">
+    <link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
 
+    <style>
+        .bgcolor{
+            background-color: #DDDDDD;
+        }
+        .container{
+            background-color: lightslategrey ;
+            border: 10px solid black;
+            padding: 10px;
+            float: none;
+            margin: 50px auto 0;
+        }
+    </style>
+</head>
+<body class="bgcolor justify-content-lg-center">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">CanYouMath?</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/verify">Sign In</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container" >
+    <div class="panel panel-primary">
+        <div class="panel-body" align="center">
+            <p>We have sent you a verfication code!</p>
+
+            <p>Please enter the code here:</p>
+
+            <form method="post" action="/step3/{{username}}">
+                <input type="hidden" name="id" value="{{id}}" />
+                <label>
+                    <input type="text" name="token" />
+                </label>
+                <input type="submit" value="Checkcode" />
+
+            </form>
+            <p align="center" style="color: red">{{text}}</p>
+        </div>
+    </div>
+</div>
+
+{{# if errors }}
+    {{# each errors }}
+        <p class="alert alert-danger">{{ this.msg }}</p>
+    {{/each}}
+{{/if}}
+
+</body>
+<div align="center">{{> footer}}</div>
+
+
+</html>
