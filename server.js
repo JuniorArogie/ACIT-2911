@@ -218,7 +218,7 @@ app.post('/math_answer/:name',(req, res) =>{
             normal_correct +=1;
             console.log("Normal_correct",normal_correct);
 
-            res.render('game',{
+            res.render('game.hbs',{
                 result: "CORRECT",
                 username: user_name,
                 calculation: question_new
@@ -232,7 +232,7 @@ app.post('/math_answer/:name',(req, res) =>{
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
 
-            res.render('game', {
+            res.render('game.hbs', {
                 result2: "WRONG",
                 username: user_name,
                 nextquestion: question,
@@ -300,7 +300,7 @@ app.post('/math2_answer/:name',(req, res) =>{
             question_result2 = question_result_new;
             hard_correct +=1;
 
-            res.render('game2',{
+            res.render('game2.hbs',{
                 result: "CORRECT",
                 username: user_name,
                 calculation: question_new2
@@ -314,7 +314,7 @@ app.post('/math2_answer/:name',(req, res) =>{
             question_result_new = eval(a + op + b);
             question_result2 = question_result_new;
 
-            res.render('game2', {
+            res.render('game2.hbs', {
                 result2: "WRONG",
                 username: user_name,
                 nextquestion: question,
