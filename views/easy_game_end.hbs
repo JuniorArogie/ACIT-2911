@@ -34,7 +34,6 @@
         </form>
     </div>
 </div>
-
 <p align="center" style="size: 25px; color: green">{{total}}</p>-->
 
 <div style=" font-size: 50px; color: darkgreen; font-family: 'Comic Sans MS',serif;" align="center"> Easy Mode</div>
@@ -47,10 +46,10 @@
         </form>
         <form action="/easy_game_end" method="POST">
             <label for="answer"></label><input style="border-radius: 10px" type="number" step="any" id="answer" name="answer" placeholder=" Input Answer"><br><br>
-            <input type="submit" class="btn btn-primary" value="Play Again">
+            <input type="submit" class="btn btn-info" value="Play Again">
         </form><br>
 
-        <p align="center" style="size: 25px; color: darkgreen">{{total}}</p>
+        <p align="center" style="size: 40px; color: darkgreen"><strong>{{total}}</strong></p>
 
 
     </div>
@@ -65,4 +64,3 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </html>
-

@@ -92,6 +92,7 @@ var e = 1;
 var hard_correct = 0;
 var normal_correct = 0;
 var easy_correct = 0;
+console.log(easy_correct)
 
 //EASY LEVEL MATH QUESTIONS
 app.post('/easy_gameplay',(req, res) =>{
@@ -146,7 +147,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             res.render('easy_game.hbs', {
                 result2: "WRONG",
                 username: user_name,
-                nextquestion: question,
+                nextquestion: question
                 //correct_answer: `The correct answer is ${correct_answer}`
             })
         })
@@ -161,7 +162,8 @@ app.post('/math_easy_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log(user.easy_score);
+                console.log("Database",user.easy_score);
+                console.log("Last Score", easy_correct);
                 if (easy_correct > user.easy_score) {
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {easy_score: easy_correct}
@@ -249,8 +251,9 @@ app.post('/math_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log(user.normal_score)
+                console.log(user.normal_score);
                 if (normal_correct > user.normal_score) {
+                    console.log(normal_correct);
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {normal_score: normal_correct}
                     })
@@ -332,7 +335,7 @@ app.post('/math2_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log(user.hard_score)
+                console.log(user.hard_score);
                 if (hard_correct > user.hard_score) {
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {hard_score: hard_correct}
