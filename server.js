@@ -128,7 +128,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             question_result3 = question_result_new;
             easy_correct +=1;
 
-            res.render('easy_game',{
+            res.render('easy_game.hbs',{
                 result: "CORRECT",
                 username: user_name,
                 calculation: question_new
@@ -143,7 +143,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             question_result_new = eval(a + op + b);
             question_result3 = question_result_new;
 
-            res.render('easy_game', {
+            res.render('easy_game.hbs', {
                 result2: "WRONG",
                 username: user_name,
                 nextquestion: question,
@@ -161,7 +161,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log(user.easy_score)
+                console.log(user.easy_score);
                 if (easy_correct > user.easy_score) {
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {easy_score: easy_correct}
