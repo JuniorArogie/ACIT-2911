@@ -8,8 +8,11 @@
 
     <style>
         .bgcolor{
-            background: url("../bg5.jpg") no-repeat;
-            background-size: 100%;
+            background: url("../bg9.gif") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
         }
     </style>
 </head>
@@ -34,15 +37,16 @@
 
 <p align="center" style="size: 25px; color: green">{{total}}</p>-->
 
+<div style=" font-size: 50px; color: darkgreen; font-family: 'Comic Sans MS',serif;" align="center"> Easy Mode</div>
 
-<div class="card w-50 h-50 text-white text-center bg-secondary mb-3" style="float: none; margin: 50px auto 0;">
+<div class="card w-50 h-50 text-white text-center  mb-3" style="float: none; margin: 50px auto 0; border-radius: 40px; background-color: #CD853F;">
 
     <div class="card-body">
         <form action="/easy_gameplay" method="POST">
             <p style="font-size: 50px">GAME OVER</p>
         </form>
         <form action="/easy_game_end" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" placeholder="Input Answer"><br><br>
+            <label for="answer"></label><input style="border-radius: 10px" type="number" step="any" id="answer" name="answer" placeholder=" Input Answer"><br><br>
             <input type="submit" class="btn btn-primary" value="Play Again">
         </form><br>
 

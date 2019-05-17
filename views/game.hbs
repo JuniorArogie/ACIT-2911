@@ -8,8 +8,11 @@
 
     <style>
         .bgcolor{
-            background: url("../bg5.jpg") no-repeat;
-            background-size: 100%;
+            background: url("../bg9.gif") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
         }
     </style>
 </head>
@@ -47,15 +50,17 @@
     </table>
 </div>-->
 
-<div class="card w-50 h-50 text-white text-center bg-secondary mb-3" style="float: none; margin: 50px auto 0;">
 
+<div style=" font-size: 50px; color: #FFFF00; font-family: 'Comic Sans MS',serif;" align="center"> Normal Mode</div>
+
+<div class="card w-50 h-50 text-white text-center  mb-3" style="float: none; margin: 50px auto 0; border-radius: 40px; background-color: #CD853F;">
     <div class="card-body">
         <form action="/gameplay/{{username}}" method="POST" class="card-title">
             <p style="font-size: 50px">{{calculation}}{{nextquestion}}</p>
 
         </form>
         <form action="/math_answer/{{username}}" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" placeholder="Input Answer" required><br><br>
+            <label for="answer"></label><input style="border-radius: 10px" type="number" step="any" id="answer" name="answer" placeholder=" Input Answer" required><br><br>
             <input type="submit" class="btn btn-primary" value="Check">
         </form>
         <div>

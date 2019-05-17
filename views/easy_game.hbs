@@ -8,12 +8,15 @@
 
     <style>
         .bgcolor{
-            background: url("../bg5.jpg") no-repeat;
-            background-size: 100%;
+            background: url("../bg9.gif") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
         }
     </style>
 </head>
-<body class="bgcolor justify-content-lg-center">
+<body class="bgcolor justify-content-lg-center" style="background-color: lightskyblue;">
 {{> game_nav}}
 
 
@@ -47,7 +50,11 @@
     </table>
 </div>-->
 
-<div class="card w-50 h-50 text-white text-center bg-secondary mb-3" style="float: none; margin: 50px auto 0;">
+
+
+<div style=" font-size: 50px; color: darkgreen; font-family: 'Comic Sans MS',serif;" align="center"> Easy Mode</div>
+
+<div class="card w-50 h-50 text-white text-center  mb-3" style="float: none; margin: 50px auto 0; border-radius: 40px; background-color: #CD853F;">
 
     <div class="card-body">
         <form action="/easy_gameplay/{{username}}" method="POST" class="card-title">
@@ -55,11 +62,11 @@
 
         </form>
         <form action="/math_easy_answer/{{username}}" method="POST">
-            <label for="answer"></label><input type="number" step="any" id="answer" name="answer" placeholder="Input Answer" required><br><br>
+            <label for="answer"></label><input style="border-radius: 10px" type="number" step="any" id="answer" name="answer" placeholder=" Input Answer" required><br><br>
             <input type="submit" class="btn btn-primary" value="Check">
-        </form>
+        </form><br>
         <div>
-            <p style="color: darkgreen; font-size: 25px">{{result}}</p><p style="color: darkred; font-size: 25px">{{result2}}</p>
+            <p style="font-size: 25px"><span style="color: darkgreen; font-size: 25px">{{result}}</span><span style="color: darkred; font-size: 25px">{{result2}}</span></p>
         </div>
 
     </div>
