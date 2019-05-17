@@ -6,11 +6,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" type="text/css">
     <style>
         .bgcolor{
-            background-color: #DDDDDD;
+            background: url("../bg4.jpg") no-repeat;
+            background-size: 100%;
         }
         .container{
             background-color: lightslategrey;
-            border: 10px solid;
+            border: 5px solid black;
+            border-radius: 10px;
             padding: 10px;
             float: none;
             margin: 50px auto 0;
@@ -81,7 +83,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="submit" class="btn btn-secondary">Register</button>
                     <p>Already have an account? <a href="/verify">Log In</a></p>
                 </div>
                 <p align="center" style="color: red">{{text}}</p>
