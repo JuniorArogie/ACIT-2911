@@ -47,8 +47,8 @@ app.get('/', (request, response) => {
 
 const getMath = async () => {
     try {
-        var a = Math.floor(Math.random() * 10) + 1;
-        var b = Math.floor(Math.random() * 10) + 1;
+        var a = Math.floor(Math.random() * 10) + 5;
+        var b = Math.floor(Math.random() * 10) + 5;
         var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
 
         return {'a':a, 'b':b, 'op':op}
@@ -58,8 +58,8 @@ const getMath = async () => {
 };
 const getMath2 = async () => {
     try {
-        var a = Math.floor(Math.random() * 20) + 2;
-        var b = Math.floor(Math.random() * 20) + 2;
+        var a = Math.floor(Math.random() * 20) + 10;
+        var b = Math.floor(Math.random() * 20) + 10;
 
         var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
 
@@ -493,9 +493,9 @@ app.post('/register', function(req, res) {
                     username: username,
                     password: password2,
                     password2: password2,
-                    easy_score: '',
-                    normal_score: '',
-                    hard_score: '',
+                    easy_score: 0,
+                    normal_score: 0,
+                    hard_score: 0,
 
                 }, (err) => {
                     if (err){
