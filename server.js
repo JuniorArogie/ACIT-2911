@@ -5,10 +5,11 @@ const expressValidator = require('express-validator');
 const session = require('express-session');
 const hbs = require('hbs');
 const utils = require('./utils');
-
+const MongoStore = require('connect-mongo')(session);
+const mongoose = require('mongoose');
+const flash = require('connect-flash');
+const request = require('request');
 var exphbs = require('express-handlebars');
-
-const port = process.env.PORT || 8080;
 
 var app = express();
 
@@ -46,8 +47,8 @@ app.get('/', (request, response) => {
 
 const getMath = async () => {
     try {
-        var a = Math.floor(Math.random() * 10) + 5;
-        var b = Math.floor(Math.random() * 10) + 5;
+        var a = Math.floor(Math.random() * 11) + 5;
+        var b = Math.floor(Math.random() * 11) + 5;
         var op = ["*", "+", "-"][Math.floor(Math.random()*3)];
 
         return {'a':a, 'b':b, 'op':op}
@@ -94,7 +95,6 @@ var easy_correct = 0;
 var easy_question = 1;
 var normal_question = 1;
 var hard_question = 1;
-console.log(easy_correct)
 
 //EASY LEVEL MATH QUESTIONS
 app.post('/easy_gameplay',(req, res) =>{
@@ -129,14 +129,16 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             e += 1;
             question_result_new = eval(a + op + b);
             question_result3 = question_result_new;
-            easy_correct +=1;
-            easy_question +=1;
+            easy_question += 1;
+            easy_correct += 1;
+
+            console.log("right " + easy_question);
 
             res.render('easy_game.hbs',{
                 result: "CORRECT",
                 username: user_name,
                 calculation: question_new,
-                next: easy_question,
+                next: easy_question
             })
         })
     }else {
@@ -145,7 +147,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             var question = "What is " + a + " " + op + " " + b + "?";
             e += 1;
             easy_question +=1;
-
+            console.log("wrong " + easy_question);
 
             question_result_new = eval(a + op + b);
             question_result3 = question_result_new;
@@ -154,7 +156,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
                 result2: "WRONG",
                 username: user_name,
                 nextquestion: question,
-                next: easy_question,
+                next: easy_question
                 //correct_answer: `The correct answer is ${correct_answer}`
             })
         })
@@ -163,14 +165,11 @@ app.post('/math_easy_answer/:name',(req, res) =>{
     const alreadyExisting = db.collection("registration").findOne({username: user_name });
 
     if (e%5 === 0 && e > 1) {
-        //time += 1;
         res.redirect(`/easy_game_end/${user_name}`);
-        var db = utils.getDb();
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log("Database",user.easy_score);
-                console.log("Last Score", easy_correct);
+                console.log(user.easy_score);
                 if (easy_correct > user.easy_score) {
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {easy_score: easy_correct}
@@ -263,9 +262,8 @@ app.post('/math_answer/:name',(req, res) =>{
 
         if (alreadyExisting){
             db.collection('registration').findOne({username: user_name}, function(err, user) {
-                console.log(user.normal_score);
+                console.log(user.normal_score)
                 if (normal_correct > user.normal_score) {
-                    console.log(normal_correct);
                     db.collection('registration').updateOne({username: user_name}, {
                         $set: {normal_score: normal_correct}
                     })
@@ -278,7 +276,7 @@ app.post('/math_answer/:name',(req, res) =>{
 app.post('/normal_game_end',(req, res) =>{
 
     res.redirect(`/mathgame/${user_name}`);
-    normal_correct = 0
+    normal_correct = 0;
     normal_question = 1;
 });
 //END NORMAL DIFFICULTY LEVEL MATH QUESTIONS
@@ -329,9 +327,9 @@ app.post('/math2_answer/:name',(req, res) =>{
             var a = result.a, b = result.b, op = result.op;
             var question = "What is " + a + " " + op + " " + b + "?";
             t += 1;
+            hard_question +=1;
             question_result_new = eval(a + op + b);
             question_result2 = question_result_new;
-            hard_question +=1;
 
             res.render('game2.hbs', {
                 result2: "WRONG",
@@ -367,7 +365,6 @@ app.post('/hard_game_end',(req, res) =>{
 
     res.redirect(`/mathgame2/${user_name}`);
     hard_correct = 0
-    hard_question 1;
 });
 //END HARD DIFFICULT LEVEL MATH QUESTIONS
 
@@ -386,6 +383,7 @@ app.get('/easy_mathgame/:name', (request, response) => {
             title: 'Math Game',
             username: user_name,
             head: 'Welcome To The Game Center',
+            next: easy_question,
         });
     }).catch((error) => {
         console.log(error)
@@ -400,7 +398,8 @@ app.get(`/easy_game_end/:name`, (request, response) => {
     response.render('easy_game_end.hbs', {
         title: 'GameEnd Page',
         username: user_name,
-        total: `You Got ${easy_correct}/5`
+        total: `You Got ${easy_correct}/5`,
+        next: easy_question
     });
 });
 //END EASY GAME GET ENDPOINT
@@ -422,6 +421,7 @@ app.get('/mathgame/:name', (request, response) => {
             title: 'Math Game',
             username: user_name,
             head: 'Welcome To The Game Center',
+            next: normal_question,
         });
     }).catch((error) => {
         console.log(error)
@@ -454,6 +454,7 @@ app.get('/mathgame2/:name', (request, response) => {
             calculation: question2,
             username: user_name,
             title: 'Math Game',
+            next: hard_question,
         });
     }).catch((error) => {
         console.log(error)
@@ -557,7 +558,7 @@ app.post('/verify', function(req, res) {
                 // res.render('welcome.hbs', {
                 //     username: username
                 // });
-                // res.redirect(`/welcome/${username}`)
+                //res.redirect(`/welcome/${username}`)
                 res.redirect(`/phone/${username}`);
             }else {
                 res.render('login.hbs', {
@@ -698,7 +699,7 @@ app.get(`/easy_leaderboard/:name`, (request, response) => {
             return console.log("Unable to get all user");
         }
 
-        console.log(docs);
+        //console.log(docs);
 
         var i;
         var array = [];
@@ -715,13 +716,13 @@ app.get(`/easy_leaderboard/:name`, (request, response) => {
             return a[1] - b[1];
         });
 
-        console.log(array);
+        //console.log(array);
 
-        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+        var first = array[array.length - 1][0] + ' (Score '+ array[array.length - 1][1] +")";
+        var second = array[array.length - 2][0] + ' (Score '+ array[array.length - 2][1]+")";
+        var third = array[array.length - 3][0] + ' (Score '+ array[array.length - 3][1]+")";
+        var fourth = array[array.length - 4][0] + ' (Score '+ array[array.length - 4][1]+")";
+        var fifth = array[array.length - 5][0] + ' (Score '+ array[array.length - 5][1]+")";
 
 
         response.render('easy_leaderboard.hbs',{
@@ -747,7 +748,7 @@ app.get(`/normal_leaderboard/:name`, (request, response) => {
             return console.log("Unable to get all user");
         }
 
-        console.log(docs);
+        //console.log(docs);
 
         var i;
         var array = [];
@@ -764,13 +765,13 @@ app.get(`/normal_leaderboard/:name`, (request, response) => {
             return a[1] - b[1];
         });
 
-        console.log(array);
+        //console.log(array);
 
-        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+        var first = array[array.length - 1][0] + ' (Score '+ array[array.length - 1][1] +")";
+        var second = array[array.length - 2][0] + ' (Score '+ array[array.length - 2][1]+")";
+        var third = array[array.length - 3][0] + ' (Score '+ array[array.length - 3][1]+")";
+        var fourth = array[array.length - 4][0] + ' (Score '+ array[array.length - 4][1]+")";
+        var fifth = array[array.length - 5][0] + ' (Score '+ array[array.length - 5][1]+")";
 
 
         response.render('normal_leaderboard.hbs',{
@@ -812,13 +813,13 @@ app.get(`/hard_leaderboard/:name`, (request, response) => {
             return a[1] - b[1];
         });
 
-        console.log(array);
+        //console.log(array);
 
-        var first = array[array.length - 1][0] + ' scores '+ array[array.length - 1][1];
-        var second = array[array.length - 2][0] + ' scores '+ array[array.length - 2][1];
-        var third = array[array.length - 3][0] + ' scores '+ array[array.length - 3][1];
-        var fourth = array[array.length - 4][0] + ' scores '+ array[array.length - 4][1];
-        var fifth = array[array.length - 5][0] + ' scores '+ array[array.length - 5][1];
+        var first = array[array.length - 1][0] + ' (Score '+ array[array.length - 1][1] +")";
+        var second = array[array.length - 2][0] + ' (Score '+ array[array.length - 2][1]+")";
+        var third = array[array.length - 3][0] + ' (Score '+ array[array.length - 3][1]+")";
+        var fourth = array[array.length - 4][0] + ' (Score '+ array[array.length - 4][1]+")";
+        var fifth = array[array.length - 5][0] + ' (Score '+ array[array.length - 5][1]+")";
 
 
         response.render('hard_leaderboard.hbs',{
@@ -838,7 +839,7 @@ app.get(`/hard_leaderboard/:name`, (request, response) => {
 //************END LEADERBOARD CODE******************
 
 app.post('/logout', function (req, res, next) {
-    user_name = ""
+    user_name = "";
     res.redirect('/')
 });
 
@@ -862,10 +863,11 @@ app.get('*', (request, response) => {
     })
 });
 
-
-app.listen(port, () => {
-    console.log(`Server is up on the port ${port}`);
+app.listen(8080, () => {
+    console.log('Server is up on the port 8080');
     utils.init();
+
 });
 
-console.log('OKKk');
+
+
