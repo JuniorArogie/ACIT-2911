@@ -11,6 +11,8 @@ const flash = require('connect-flash');
 const request = require('request');
 var exphbs = require('express-handlebars');
 
+const port = process.env.PORT || 8080;
+
 var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials');
@@ -844,10 +846,8 @@ app.get('*', (request, response) => {
     })
 });
 
-const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`);
     utils.init();
-
 });
