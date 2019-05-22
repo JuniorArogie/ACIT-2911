@@ -9,7 +9,16 @@
             background: url("../bg4.jpg") no-repeat;
             background-size: 100%;
         }
-        .container{
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            text-align: center;
+            padding-top: 10px;
+        }
+        /*.container{
             background-color: lightslategrey;
             border: 5px solid black;
             border-radius: 10px;
@@ -17,6 +26,7 @@
             float: none;
             margin: 50px auto 0;
         }
+
     </style>
 </head>
 <body class="bgcolor justify-content-lg-center">
@@ -44,10 +54,20 @@
     </div>
 </nav>
 <div class="container">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-body" align="center">
+            <style>
+                .panel-default {
+                    background-color: #FF9F3A;
+                    border: 5px solid orangered;
+                    border-radius: 10px;
+                    padding: 10px;
+                    float: none;
+                    margin: 50px auto 0;
+                }
+            </style>
             <form method="POST" action="/register">
-                <h1 class="h3 mb-3 font-weight-normal" style="font-family: Cambria,serif">Please Register</h1>
+                <h1 class="h3 mb-3 font-weight-normal" style="font-family: 'Comic Sans MS'; font-size: 40px; color: #E32B2B;">Register with us!</h1>
                 <div class="form-group">
                     <label class="col-md-2">
                         <input type="text" id="inputFname" class="form-control" name="fname" placeholder="First Name" required>
@@ -83,7 +103,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-secondary">Register</button>
+                    <button type="submit" class="btn btn-success">Register</button>
                     <p>Already have an account? <a href="/verify">Log In</a></p>
                 </div>
                 <p align="center" style="color: red">{{text}}</p>
@@ -94,15 +114,16 @@
     </div>
 </div>
 
-
-
 {{# if errors }}
     {{# each errors }}
         <p class="alert alert-danger">{{ this.msg }}</p>
     {{/each}}
 {{/if}}
 
+<div class="footer bg-dark">
+    {{> footer}}
+</div>
+
 </body>
-<div align="center">{{> footer}}</div>
 
 </html>
