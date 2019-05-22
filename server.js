@@ -94,6 +94,9 @@ var e = 1;
 var hard_correct = 0;
 var normal_correct = 0;
 var easy_correct = 0;
+var easy_question = 1;
+var normal_question = 1;
+var hard_question = 1;
 console.log(easy_correct)
 
 //EASY LEVEL MATH QUESTIONS
@@ -130,6 +133,7 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             question_result_new = eval(a + op + b);
             question_result3 = question_result_new;
             easy_correct +=1;
+            easy_question +=1;
 
             res.render('easy_game.hbs',{
                 result: "CORRECT",
@@ -142,6 +146,8 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             var a = result.a, b = result.b, op = result.op;
             var question = "What is " + a + " " + op + " " + b + "?";
             e += 1;
+            easy_question +=1;
+
 
             question_result_new = eval(a + op + b);
             question_result3 = question_result_new;
@@ -180,7 +186,8 @@ app.post('/math_easy_answer/:name',(req, res) =>{
 app.post('/easy_game_end',(req, res) =>{
 
     res.redirect(`/easy_mathgame/${user_name}`);
-    easy_correct = 0
+    easy_correct = 0;
+    easy_question = 1;
 });
 //END EASY LEVEL MATH QUESTIONS
 
@@ -220,6 +227,7 @@ app.post('/math_answer/:name',(req, res) =>{
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
             normal_correct +=1;
+            normal_question +=1;
             console.log("Normal_correct",normal_correct);
 
             res.render('game.hbs',{
@@ -233,6 +241,7 @@ app.post('/math_answer/:name',(req, res) =>{
             var a = result.a, b = result.b, op = result.op;
             var question = "What is " + a + " " + op + " " + b + "?";
             n += 1;
+            normal_question +=1;
             question_result_new = eval(a + op + b);
             question_result = question_result_new;
 
@@ -269,6 +278,7 @@ app.post('/normal_game_end',(req, res) =>{
 
     res.redirect(`/mathgame/${user_name}`);
     normal_correct = 0
+    normal_question = 1;
 });
 //END NORMAL DIFFICULTY LEVEL MATH QUESTIONS
 
@@ -304,6 +314,7 @@ app.post('/math2_answer/:name',(req, res) =>{
             question_result_new = eval(a + op + b);
             question_result2 = question_result_new;
             hard_correct +=1;
+            hard_question +=1;
 
             res.render('game2.hbs',{
                 result: "CORRECT",
@@ -318,6 +329,7 @@ app.post('/math2_answer/:name',(req, res) =>{
             t += 1;
             question_result_new = eval(a + op + b);
             question_result2 = question_result_new;
+            hard_question +=1;
 
             res.render('game2.hbs', {
                 result2: "WRONG",
@@ -352,6 +364,7 @@ app.post('/hard_game_end',(req, res) =>{
 
     res.redirect(`/mathgame2/${user_name}`);
     hard_correct = 0
+    hard_question 1;
 });
 //END HARD DIFFICULT LEVEL MATH QUESTIONS
 
