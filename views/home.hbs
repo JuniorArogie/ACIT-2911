@@ -13,6 +13,15 @@
             background: url("../bg4.jpg") no-repeat;
             background-size: 100%;
         }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            text-align: center;
+            padding-top: 10px;
+        }
     </style>
 </head>
 
@@ -45,11 +54,13 @@
 <h1 style="text-align: center;"><span style="font-family: 'Comic Sans MS'; font-size: 100px; text-align: center; color: #ffe100;">Can</span><span style="font-family: 'Comic Sans MS'; font-size: 100px; text-align: center; color: blue;">You</span><span style="font-family: 'Comic Sans MS'; font-size: 100px; text-align: center; color: orangered;">Math?</span></h1>
 
 <div align="center" style="margin-top: 1em;">
-
-    <img src="math.png" width="600" height="400">
+    <!--<h1>{{head}}</h1>-->
+    <img src="math.PNG" width="600" height="400">
 </div>
 
-<div align="center">{{> footer}}</div>
+<div class="footer bg-dark">
+    {{> footer}}
+</div>
 
 </body>
 
