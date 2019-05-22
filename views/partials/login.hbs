@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" type="text/css">
+    <link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
+
+    <style>
+        .bgcolor{
+            background: url("../bg4.jpg") no-repeat;
+            background-size: 100% ;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            text-align: center;
+            padding-top: 10px;
+        }
+        /*.container{
+            background-color: lightslategrey ;
+            border: 5px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            float: none;
+            margin: 50px auto 0;
+        }
+    </style>
+</head>
+<body class="bgcolor justify-content-lg-center">
+
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar">
+        <img src="../logo.jpg" width="35" height="35" alt="">
+    </a>
+    <a class="navbar-brand" href="/">CanYouMath?</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/verify">Sign In</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+<div style="padding-top: 40px"></div>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-body" align="center">
+            <style>
+                .panel-default {
+                    background-color: #FF9F3A;
+                    border: 5px solid orangered;
+                    border-radius: 10px;
+                    padding: 10px;
+                    float: none;
+                    margin: 50px auto 0;
+                }
+            </style>
+            <form method="POST" action="/verify">
+                <h1 class="h3 mb-3 font-weight-normal" style="font-family: 'Comic Sans MS'; font-size: 100px; color: #E32B2B;">Login!</h1>
+                <div class="form-group">
+                    <label class="col-md-4">
+                    <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username" required>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4">
+                    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Sign In</button>
+                </div>
+            </form>
+            <p align="center" style="color: red">{{text}}</p>
+        </div>
+    </div>
+</div>
+
+<div class="footer bg-dark">
+    {{> footer}}
+</div>
+
+</body>
+
+</html>
