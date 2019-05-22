@@ -20,39 +20,12 @@
 {{> game_nav}}
 
 
-<!--<div align="center" style="padding-top: 20px">
-    <h1 style="font-family: Century Gothic, serif ">Welcome to NORMAL difficulty</h1>
-    <table>
-        <tr>
-            <td>
-                <div class="form-group btn-group">
-                    <form action="/gameplay/{{username}}" method="POST">
-                        <p style="font-size: 50px">{{calculation}}{{nextquestion}}</p>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="form-group btn-group">
-                    <form action="/math_answer/{{username}}" method="POST">
-                        <label for="answer"></label><input type="number" step="any" id="answer" name="answer" required>
-                        <p>{{result}}</p>
-                        <input type="submit" class="btn btn-primary" value="Check" placeholder="Input Answer">
-                        <p>{{correct_answer}}</p>
-                        <p>{{status}}</p>
-                    </form>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>-->
-
-
-
 <div style=" font-size: 50px; color: darkgreen; font-family: 'Comic Sans MS',serif;" align="center"> Easy Mode</div>
 
 <div class="card w-50 h-50 text-white text-center  mb-3" style="float: none; margin: 50px auto 0; border-radius: 40px; background-color: #CD853F;">
+    <div style="font-size: 10px; color: black">
+        <p>Question {{next}}</p>
+    </div>
 
     <div class="card-body">
         <form action="/easy_gameplay/{{username}}" method="POST" class="card-title">

@@ -23,10 +23,14 @@
 <div style=" font-size: 50px; color: darkred; font-family: 'Comic Sans MS',serif;" align="center"> Hard Mode</div>
 
 <div class="card w-50 h-50 text-white text-center  mb-3" style="float: none; margin: 50px auto 0; border-radius: 40px; background-color: #CD853F;">
+    <div style="font-size: 10px; color: black">
+        <p>Question {{next}}</p>
+    </div>
 
     <div class="card-body">
         <form action="/gameplay2/{{username}}" method="POST" class="card-title">
             <p style="font-size: 50px">{{calculation}}{{nextquestion}}</p>
+
 
         </form>
         <form action="/math2_answer/{{username}}" method="POST">
