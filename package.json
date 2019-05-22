@@ -1,27 +1,33 @@
 {
-  "name": "AgileProject",
+  "name": "agile",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "connect-flash": "^0.1.1",
-    "connect-mongo": "^2.0.3",
+    "chai-http": "^4.3.0",
+
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
+    "express-handlebars": "^3.1.0",
     "express-session": "^1.16.1",
     "express-validator": "^5.3.1",
-    "flash": "^1.1.0",
     "hbs": "^4.0.4",
-    "mongoose": "^5.5.3",
+    "messagebird": "^2.4.1",
+    "mongo": "^0.1.0",
+
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+
+    "supertest": "^4.0.2",
+    "utils": "^0.3.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
   }
 }
