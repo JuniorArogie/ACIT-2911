@@ -5,10 +5,10 @@ const expressValidator = require('express-validator');
 const session = require('express-session');
 const hbs = require('hbs');
 const utils = require('./utils');
-const MongoStore = require('connect-mongo')(session);
-const mongoose = require('mongoose');
-const flash = require('connect-flash');
-const request = require('request');
+// const MongoStore = require('connect-mongo')(session);
+// const mongoose = require('mongoose');
+// const flash = require('connect-flash');
+// const request = require('request');
 var exphbs = require('express-handlebars');
 
 const port = process.env.PORT || 8080;
