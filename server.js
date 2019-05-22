@@ -138,7 +138,8 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             res.render('easy_game.hbs',{
                 result: "CORRECT",
                 username: user_name,
-                calculation: question_new
+                calculation: question_new,
+                next: easy_question,
             })
         })
     }else {
@@ -155,7 +156,8 @@ app.post('/math_easy_answer/:name',(req, res) =>{
             res.render('easy_game.hbs', {
                 result2: "WRONG",
                 username: user_name,
-                nextquestion: question
+                nextquestion: question,
+                next: easy_question,
                 //correct_answer: `The correct answer is ${correct_answer}`
             })
         })
@@ -233,7 +235,8 @@ app.post('/math_answer/:name',(req, res) =>{
             res.render('game.hbs',{
                 result: "CORRECT",
                 username: user_name,
-                calculation: question_new
+                calculation: question_new,
+                next: normal_question,
             })
         })
     }else {
@@ -249,6 +252,7 @@ app.post('/math_answer/:name',(req, res) =>{
                 result2: "WRONG",
                 username: user_name,
                 nextquestion: question,
+                next: normal_question,
                 //correct_answer: `The correct answer is ${correct_answer}`
             })
         })
@@ -319,7 +323,8 @@ app.post('/math2_answer/:name',(req, res) =>{
             res.render('game2.hbs',{
                 result: "CORRECT",
                 username: user_name,
-                calculation: question_new2
+                calculation: question_new2,
+                next: hard_question,
             })
         })
     }else {
@@ -335,6 +340,7 @@ app.post('/math2_answer/:name',(req, res) =>{
                 result2: "WRONG",
                 username: user_name,
                 nextquestion: question,
+                next: hard_question,
 
                 //correct_answer: `The correct answer is ${question_result2}`
             })
