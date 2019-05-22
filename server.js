@@ -5,10 +5,7 @@ const expressValidator = require('express-validator');
 const session = require('express-session');
 const hbs = require('hbs');
 const utils = require('./utils');
-const MongoStore = require('connect-mongo')(session);
-const mongoose = require('mongoose');
-const flash = require('connect-flash');
-const request = require('request');
+
 var exphbs = require('express-handlebars');
 
 var app = express();
@@ -17,6 +14,8 @@ hbs.registerPartials(__dirname + '/views/partials');
 hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
 });
+
+const port = process.env.PORT || 8080;
 
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
@@ -863,8 +862,8 @@ app.get('*', (request, response) => {
     })
 });
 
-app.listen(8080, () => {
-    console.log('Server is up on the port 8080');
+app.listen(port, () => {
+    console.log(`Server is up on the port ${port}`);
     utils.init();
 
 });
